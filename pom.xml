@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>net.anweisen.displaycraft</groupId>
+	<artifactId>plugin</artifactId>
+	<version>1.0</version>
+
+	<properties>
+		<maven.compiler.source>16</maven.compiler.source>
+		<maven.compiler.target>16</maven.compiler.target>
+		<utility.version>1.4</utility.version>
+<!--		<spigot.version>1.17-R0.1-SNAPSHOT</spigot.version>-->
+		<spigot.version>1.18.2-R0.1-SNAPSHOT</spigot.version>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot-api</artifactId>
+			<version>${spigot.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot</artifactId>
+			<version>${spigot.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>net.anweisen.utility</groupId>
+			<artifactId>common-utils</artifactId>
+			<version>${utility.version}</version>
+		</dependency>
+
+	</dependencies>
+
+	<repositories>
+
+		<repository>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+		</repository>
+
+		<repository>
+			<id>viaversion-repo</id>
+			<url>https://repo.viaversion.com</url>
+		</repository>
+
+	</repositories>
+
+</project>
