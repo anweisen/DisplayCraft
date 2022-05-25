@@ -9,17 +9,17 @@ import javax.annotation.Nonnull;
  */
 public enum Direction {
 
-	NORTH,
-	SOUTH,
-	WEST,
-	EAST,
-	UP,
-	DOWN;
+  NORTH,
+  SOUTH,
+  WEST,
+  EAST,
+  UP,
+  DOWN;
 
-	@Nonnull
-	@CheckReturnValue
-	public Direction reverse() {
-		return ordinal() % 2 == 0 ? values()[ordinal() + 1] : values()[ordinal() - 1];
-	}
+  @Nonnull
+  @CheckReturnValue
+  public Direction reverse() {
+    return ordinal() % 2 == 0 ? values()[ordinal() + 1] : values()[ordinal() - 1];
+  }
 
 }

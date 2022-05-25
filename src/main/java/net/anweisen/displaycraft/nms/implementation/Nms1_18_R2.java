@@ -25,69 +25,69 @@ import java.util.Collections;
  */
 public class Nms1_18_R2 implements NmsProvider {
 
-	@Override
-	public Object getNmsPlayer(@Nonnull Player bukkitPlayer) {
-		return ReflectionUtils.invokeMethodOrNull(bukkitPlayer, "getHandle");
-	}
+  @Override
+  public Object getNmsPlayer(@Nonnull Player bukkitPlayer) {
+    return ReflectionUtils.invokeMethodOrNull(bukkitPlayer, "getHandle");
+  }
 
-	@Override
-	public Object getPlayerWorld(@Nonnull Object nmsPlayer) {
-		return ReflectionUtils.getFieldValueOrNull(nmsPlayer, "s");
-	}
+  @Override
+  public Object getPlayerWorld(@Nonnull Object nmsPlayer) {
+    return ReflectionUtils.getFieldValueOrNull(nmsPlayer, "s");
+  }
 
-	@Override
-	public Object getPlayerConnection(@Nonnull Object nmsPlayer) {
-		return ReflectionUtils.getFieldValueOrNull(nmsPlayer, "b");
-	}
+  @Override
+  public Object getPlayerConnection(@Nonnull Object nmsPlayer) {
+    return ReflectionUtils.getFieldValueOrNull(nmsPlayer, "b");
+  }
 
-	@Override
-	public Integer getEntityId(@Nonnull Object nmsEntity) {
-		return ReflectionUtils.invokeMethodOrNull(nmsEntity, "ae");
-	}
+  @Override
+  public Integer getEntityId(@Nonnull Object nmsEntity) {
+    return ReflectionUtils.invokeMethodOrNull(nmsEntity, "ae");
+  }
 
-	@Override
-	public Object getDataWatcher(@Nonnull Object nmsEntity) {
-		return ReflectionUtils.invokeMethodOrNull(nmsEntity, "ai");
-	}
+  @Override
+  public Object getDataWatcher(@Nonnull Object nmsEntity) {
+    return ReflectionUtils.invokeMethodOrNull(nmsEntity, "ai");
+  }
 
-	@Override
-	public Object getItemFrameEntity(@Nonnull Object playerWorld, int posX, int posY, int posZ, @Nonnull String facing) {
-		return new EntityItemFrame((World) playerWorld, new BlockPosition(posX, posY, posZ), EnumDirection.valueOf(facing));
-	}
+  @Override
+  public Object getItemFrameEntity(@Nonnull Object playerWorld, int posX, int posY, int posZ, @Nonnull String facing) {
+    return new EntityItemFrame((World) playerWorld, new BlockPosition(posX, posY, posZ), EnumDirection.valueOf(facing));
+  }
 
-	@Override
-	public Object getEntityDestroyPacket(int entityId) {
-		return new PacketPlayOutEntityDestroy(entityId);
-	}
+  @Override
+  public Object getEntityDestroyPacket(int entityId) {
+    return new PacketPlayOutEntityDestroy(entityId);
+  }
 
-	@Override
-	public Object getEntitySpawnPacket(@Nonnull Object nmsItemFrameEntity) {
-		return ReflectionUtils.invokeMethodOrNull(nmsItemFrameEntity, "S");
-	}
+  @Override
+  public Object getEntitySpawnPacket(@Nonnull Object nmsItemFrameEntity) {
+    return ReflectionUtils.invokeMethodOrNull(nmsItemFrameEntity, "S");
+  }
 
-	@Override
-	public Object getEntityMetadataPacket(int entityId, @Nonnull Object dataWatcher) {
-		return new PacketPlayOutEntityMetadata(entityId, (DataWatcher) dataWatcher, false);
-	}
+  @Override
+  public Object getEntityMetadataPacket(int entityId, @Nonnull Object dataWatcher) {
+    return new PacketPlayOutEntityMetadata(entityId, (DataWatcher) dataWatcher, false);
+  }
 
-	@Override
-	public Object getMapUpdatePacket(int mapId, int offsetX, int offsetY, int width, int height, @Nonnull byte[] data) {
-		return new PacketPlayOutMap(mapId, (byte) 3, false, Collections.emptyList(), new WorldMap.b(offsetX, offsetY, width, height, data));
-	}
+  @Override
+  public Object getMapUpdatePacket(int mapId, int offsetX, int offsetY, int width, int height, @Nonnull byte[] data) {
+    return new PacketPlayOutMap(mapId, (byte) 3, false, Collections.emptyList(), new WorldMap.b(offsetX, offsetY, width, height, data));
+  }
 
-	@Override
-	public Object getNmsItem(@Nonnull ItemStack item) {
-		return CraftItemStack.asNMSCopy(item);
-	}
+  @Override
+  public Object getNmsItem(@Nonnull ItemStack item) {
+    return CraftItemStack.asNMSCopy(item);
+  }
 
-	@Override
-	public void setItemFrameItem(@Nonnull Object nmsEntity, @Nonnull Object nmsItem) {
-		((EntityItemFrame) nmsEntity).setItem((net.minecraft.world.item.ItemStack) nmsItem, true, false);
-	}
+  @Override
+  public void setItemFrameItem(@Nonnull Object nmsEntity, @Nonnull Object nmsItem) {
+    ((EntityItemFrame) nmsEntity).setItem((net.minecraft.world.item.ItemStack) nmsItem, true, false);
+  }
 
-	@Override
-	public void sendPacket(@Nonnull Object playerConnection, @Nonnull Object packet) {
-		((PlayerConnection) playerConnection).a((Packet<?>) packet);
+  @Override
+  public void sendPacket(@Nonnull Object playerConnection, @Nonnull Object packet) {
+    ((PlayerConnection) playerConnection).a((Packet<?>) packet);
 
 //		try {
 //
@@ -97,5 +97,5 @@ public class Nms1_18_R2 implements NmsProvider {
 //		} catch (Exception ex) {
 //			ex.printStackTrace();
 //		}
-	}
+  }
 }

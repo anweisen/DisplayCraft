@@ -10,30 +10,30 @@ import javax.annotation.Nonnull;
  */
 public interface NmsProvider {
 
-	Object getNmsPlayer(@Nonnull Player bukkitPlayer);
+  Object getNmsPlayer(@Nonnull Player bukkitPlayer);
 
-	Object getPlayerWorld(@Nonnull Object nmsPlayer);
+  Object getPlayerWorld(@Nonnull Object nmsPlayer);
 
-	Object getPlayerConnection(@Nonnull Object nmsPlayer);
+  Object getPlayerConnection(@Nonnull Object nmsPlayer);
 
-	Integer getEntityId(@Nonnull Object nmsEntity);
+  Integer getEntityId(@Nonnull Object nmsEntity);
 
-	Object getDataWatcher(@Nonnull Object nmsEntity);
+  Object getDataWatcher(@Nonnull Object nmsEntity);
 
-	Object getItemFrameEntity(@Nonnull Object playerWorld, int posX, int posY, int posZ, @Nonnull String facing);
+  Object getItemFrameEntity(@Nonnull Object playerWorld, int posX, int posY, int posZ, @Nonnull String facing);
 
-	Object getEntityDestroyPacket(int entityId);
+  Object getEntityDestroyPacket(int entityId);
 
-	Object getEntitySpawnPacket(@Nonnull Object nmsItemFrameEntity);
+  Object getEntitySpawnPacket(@Nonnull Object nmsItemFrameEntity);
 
-	Object getEntityMetadataPacket(int entityId, @Nonnull Object dataWatcher);
+  Object getEntityMetadataPacket(int entityId, @Nonnull Object dataWatcher);
 
-	Object getMapUpdatePacket(int mapId, int offsetX, int offsetY, int width, int height, @Nonnull byte[] data);
+  Object getMapUpdatePacket(int mapId, int offsetX, int offsetY, int width, int height, @Nonnull byte[] data);
 
-	Object getNmsItem(@Nonnull ItemStack item);
+  Object getNmsItem(@Nonnull ItemStack item);
 
-	void setItemFrameItem(@Nonnull Object nmsEntity, @Nonnull Object nmsItem);
+  void setItemFrameItem(@Nonnull Object nmsEntity, @Nonnull Object nmsItem);
 
-	void sendPacket(@Nonnull Object playerConnection, @Nonnull Object packet);
+  void sendPacket(@Nonnull Object playerConnection, @Nonnull Object packet);
 
 }
