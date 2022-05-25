@@ -1,0 +1,5 @@
+name: DisplayCraft
+author: anweisen
+main: net.anweisen.displaycraft.DisplayCraft
+version: 1.0
+api-version: 1.13
