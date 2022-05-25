@@ -88,14 +88,5 @@ public class Nms1_18_R2 implements NmsProvider {
   @Override
   public void sendPacket(@Nonnull Object playerConnection, @Nonnull Object packet) {
     ((PlayerConnection) playerConnection).a((Packet<?>) packet);
-
-//		try {
-//
-//			Method method = playerConnection.getClass().getDeclaredMethod("a", Packet.class);
-//			method.setAccessible(true);
-//			method.invoke(playerConnection, packet);
-//		} catch (Exception ex) {
-//			ex.printStackTrace();
-//		}
   }
 }
