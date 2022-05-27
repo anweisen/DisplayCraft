@@ -1,5 +1,7 @@
 package net.anweisen.displaycraft;
 
+import net.anweisen.displaycraft.api.DisplayProvider;
+import net.anweisen.displaycraft.api.implementation.DisplayProviderImpl;
 import net.anweisen.displaycraft.nms.NmsProvider;
 import net.anweisen.displaycraft.nms.Reflect;
 import net.minecraft.util.Tuple;
@@ -9,8 +11,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.map.MapPalette;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -31,21 +31,28 @@ import java.util.concurrent.TimeUnit;
  */
 public class DisplayCraft extends JavaPlugin implements Listener {
 
-  int ind;
-  boolean dir = true;
-  private int id;
-
-
-
   private static DisplayCraft instance;
-
-  private NmsProvider nmsProvider;
   private ScheduledExecutorService executorService;
+  private NmsProvider nmsProvider;
+  private DisplayProvider displayProvider;
+
+  @Nonnull
+  public static DisplayCraft getInstance() {
+    return instance;
+  }
 
   @Override
   public void onLoad() {
+    getLogger().info("Detected server version " + Reflect.VERSION + " at " + Reflect.CRAFTBUKKIT_PREFIX + "/" + Reflect.MINECRAFT_PREFIX);
+
     executorService = Executors.newScheduledThreadPool(3);
     nmsProvider = Reflect.newNmsProvider();
+
+    displayProvider = new DisplayProviderImpl(nmsProvider);
+
+    getLogger().info("Provided scheduled thread pool executor with 3 threads");
+    getLogger().info("Using nms provider " + nmsProvider.getClass().getName() + "..");
+    getLogger().info("Finished loading!");
   }
 
   @Override
@@ -60,18 +67,18 @@ public class DisplayCraft extends JavaPlugin implements Listener {
   }
 
   @Nonnull
-  public NmsProvider getNmsProvider() {
-    return nmsProvider;
-  }
-
-  @Nonnull
   public ScheduledExecutorService getExecutorService() {
     return executorService;
   }
 
   @Nonnull
-  public static DisplayCraft getInstance() {
-    return instance;
+  public NmsProvider getNmsProvider() {
+    return nmsProvider;
+  }
+
+  @Nonnull
+  public DisplayProvider getDisplayProvider() {
+    return displayProvider;
   }
 
   @Override
