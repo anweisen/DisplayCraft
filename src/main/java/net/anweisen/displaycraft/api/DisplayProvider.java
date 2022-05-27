@@ -13,6 +13,8 @@ public interface DisplayProvider {
   int SIZE = 128;
   int BUFFER_SIZE = SIZE * SIZE;
 
+  int BORDER = SIZE - 1;
+
   /**
    * Creates a fake map on the player's client in his current world at the given position.
    * The fake map will carry the given mapId or use the returned entityId if -1 is given.
