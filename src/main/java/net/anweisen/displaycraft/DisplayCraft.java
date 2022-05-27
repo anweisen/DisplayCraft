@@ -2,20 +2,27 @@ package net.anweisen.displaycraft;
 
 import net.anweisen.displaycraft.nms.NmsProvider;
 import net.anweisen.displaycraft.nms.Reflect;
+import net.minecraft.util.Tuple;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.map.MapPalette;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 import javax.annotation.Nonnull;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
-import java.util.Arrays;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,10 +35,43 @@ public class DisplayCraft extends JavaPlugin implements Listener {
   boolean dir = true;
   private int id;
 
+
+
+  private static DisplayCraft instance;
+
+  private NmsProvider nmsProvider;
+  private ScheduledExecutorService executorService;
+
+  @Override
+  public void onLoad() {
+    executorService = Executors.newScheduledThreadPool(3);
+    nmsProvider = Reflect.newNmsProvider();
+  }
+
   @Override
   public void onEnable() {
     getCommand("display-craft").setExecutor(this);
     getServer().getPluginManager().registerEvents(this, this);
+  }
+
+  @Override
+  public void onDisable() {
+    executorService.shutdown();
+  }
+
+  @Nonnull
+  public NmsProvider getNmsProvider() {
+    return nmsProvider;
+  }
+
+  @Nonnull
+  public ScheduledExecutorService getExecutorService() {
+    return executorService;
+  }
+
+  @Nonnull
+  public static DisplayCraft getInstance() {
+    return instance;
   }
 
   @Override
