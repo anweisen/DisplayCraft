@@ -1,0 +1,7 @@
+name: DisplayCraft-Desktop
+author: anweisen
+main: net.anweisen.displaycraft.desktop.DisplayCraftDesktop
+version: 1.0
+api-version: 1.13
+depend:
+  - DisplayCraft
