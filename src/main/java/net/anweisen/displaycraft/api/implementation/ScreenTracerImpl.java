@@ -19,12 +19,12 @@ public class ScreenTracerImpl implements ScreenTracer {
   @Override
   public TraceResult trace(@Nonnull Direction axis, int coordinate, @Nonnull Location origin, int maxDistance, int resolution) {
     Direction opposite = axis.getOpposite();
-
     Vector direction = origin.getDirection().normalize();
 
     float fraction = 1f / resolution;
     Vector fractionVector = direction.clone().multiply(fraction);
 
+    // the exact coordinate on which the map image (screen surface) will be rendered -> .95 to back of block
     double screenCoordinate = coordinate + (Math.max(opposite.getModEntirety(), 0) * .95);
 
     Location position = origin.clone();
@@ -32,9 +32,11 @@ public class ScreenTracerImpl implements ScreenTracer {
     for (float f = 0; f < maxDistance; f += fraction) {
       Location next = position.clone().add(fractionVector);
 
+      // distance between (next) cursor position and screen surface
       double distance = Math.abs(screenCoordinate - axis.getAxis(next.getX(), next.getY(), next.getZ()));
       if (distance > lastDistance) {
 
+        // find relative cursor position
         Location relative = position.clone().subtract(position.getBlockX(), position.getBlockY(), position.getBlockZ());
         float relX = opposite == Direction.SOUTH || opposite == Direction.WEST ? 1 - (float) (axis.getModX() != 0 ? relative.getZ() : relative.getX()) : (float) (axis.getModX() != 0 ? relative.getZ() : relative.getX());
         float relY = 1 - (float) relative.getY();
