@@ -23,13 +23,19 @@ public interface Image {
 
   void setColor(byte color);
 
+  void drawPixel(int x, int y);
+
   void fillRect(int x, int y, int width, int height);
+
+  void drawImage(int x, int y, @Nonnull Image image);
 
   @Nonnull
   Image clipImage(int x, int y, int width, int height);
 
   @Nonnull
   Image copy();
+
+  byte getPixel(int x, int y);
 
   @Nonnull
   byte[] getContent();

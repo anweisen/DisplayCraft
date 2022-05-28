@@ -49,6 +49,11 @@ public class ImageImpl implements Image {
   }
 
   @Override
+  public void drawPixel(int x, int y) {
+    content[y * width + x] = color;
+  }
+
+  @Override
   public void fillRect(int x, int y, int width, int height) {
     Images.checkBounds(x, width, this.width);
     Images.checkBounds(y, height, this.height);
@@ -58,6 +63,18 @@ public class ImageImpl implements Image {
     for (int i = y; i < dY; i++) {
       for (int j = x; j < dX; j++) {
         content[i * this.width + j] = color;
+      }
+    }
+  }
+
+  @Override
+  public void drawImage(int x, int y, @Nonnull Image image) {
+    Images.checkBounds(x, image.getWidth(), this.width);
+    Images.checkBounds(y, image.getHeight(), this.height);
+
+    for (int i = 0; i < image.getHeight(); i++) {
+      for (int j = 0; j < image.getWidth(); j++) {
+        content[(i + y) * width + x + j] = image.getPixel(j, i);
       }
     }
   }
@@ -77,6 +94,12 @@ public class ImageImpl implements Image {
   @Override
   protected Image clone() {
     return this.copy();
+  }
+
+  @Override
+  public byte getPixel(int x, int y) {
+    Images.checkBounds(x, y, width, height);
+    return content[y * height + x];
   }
 
   @Nonnull
