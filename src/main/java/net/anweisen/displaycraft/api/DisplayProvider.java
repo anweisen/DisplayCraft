@@ -1,8 +1,9 @@
 package net.anweisen.displaycraft.api;
 
+import net.anweisen.displaycraft.api.image.Image;
 import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
-import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * @author anweisen | https://github.com/anweisen
@@ -37,7 +38,6 @@ public interface DisplayProvider {
 
   /**
    * Updates the target fake map held on the player's client with the given data.
-   * The image will be converted into the valid map color palette.
    *
    * @param player the target player
    * @param mapId  the mapId of the target map on the player's client

@@ -2,12 +2,11 @@ package net.anweisen.displaycraft.api.implementation;
 
 import net.anweisen.displaycraft.api.DisplayProvider;
 import net.anweisen.displaycraft.api.Position;
+import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.nms.NmsProvider;
 import net.anweisen.displaycraft.nms.Reflect;
 import org.bukkit.entity.Player;
-import org.bukkit.map.MapPalette;
 import javax.annotation.Nonnull;
-import java.awt.*;
 
 /**
  * @author anweisen | https://github.com/anweisen
@@ -30,9 +29,8 @@ public class DisplayProviderImpl implements DisplayProvider {
   }
 
   @Override
-  @SuppressWarnings("deprecation")
   public void render(@Nonnull Player player, int mapId, @Nonnull Image image) {
-    render(player, mapId, 0, 0, image.getWidth(null), image.getHeight(null), MapPalette.imageToBytes(image));
+    render(player, mapId, 0, 0, image.getWidth(), image.getHeight(), image.getContent());
   }
 
   @Override
