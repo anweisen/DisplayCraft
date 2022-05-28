@@ -2,6 +2,7 @@ package net.anweisen.displaycraft.api.image;
 
 import net.anweisen.displaycraft.api.implementation.image.ImageImpl;
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 
 /**
  * @author anweisen | https://github.com/anweisen
@@ -21,9 +22,33 @@ public final class Images {
     return new ImageImpl(width, height);
   }
 
+  @Nonnull
+  public static Image newImage(int width, int height, @Nonnull byte[] content) {
+    return new ImageImpl(width, height, content);
+  }
+
+  @Nonnull
+  public static Image clipImage(int x, int y, int width, int height, int originalWidth, @Nonnull byte[] content) {
+    byte[] result = new byte[width * height];
+    for (int i = 0; i < height; i++) {
+      System.arraycopy(content, (i + y) * originalWidth + x, result, i * width, width);
+    }
+    return newImage(width, height, result);
+  }
+
+  @Nonnull
+  public static Image copyImage(@Nonnull Image image) {
+    return newImage(image.getWidth(), image.getHeight(), Arrays.copyOf(image.getContent(), image.getContent().length));
+  }
+
   public static void checkBounds(int position, int size, int max) {
     if (position + size > max)
-      throw new IllegalArgumentException("Given positioning " + " out of bounds (" + position + " + " + size + " > " + max + ")");
+      throw new IllegalArgumentException("Given positioning out of bounds (" + position + " + " + size + " > " + max + ")");
+  }
+
+  public static void checkResolution(int width, int height, int size) {
+    if (width * height != size)
+      throw new IllegalArgumentException("Given resolutions dont match (" + width + ", " + height + " != " + size + ")");
   }
 
 }

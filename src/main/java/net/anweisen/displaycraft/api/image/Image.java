@@ -25,6 +25,12 @@ public interface Image {
   void setColor(byte color);
 
   @Nonnull
+  Image clipImage(int x, int y, int width, int height);
+
+  @Nonnull
+  Image copy();
+
+  @Nonnull
   byte[] getContent();
 
 }
