@@ -28,11 +28,11 @@ public interface ScreenTracer {
   final class TraceResult {
     private final Position screen;
 
-    private final Coordinates coordinates;
+    private final Cursor cursor;
 
-    public TraceResult(@Nonnull Position screen, @Nonnull Coordinates coordinates) {
+    public TraceResult(@Nonnull Position screen, @Nonnull Cursor cursor) {
       this.screen = screen;
-      this.coordinates = coordinates;
+      this.cursor = cursor;
     }
 
     @Nonnull
@@ -41,13 +41,13 @@ public interface ScreenTracer {
     }
 
     @Nonnull
-    public Coordinates getCoordinates() {
-      return coordinates;
+    public Cursor getCoordinates() {
+      return cursor;
     }
 
     @Override
     public String toString() {
-      return "TraceResult[" + "x=" + coordinates.getRelativeX() + " y=" + coordinates.getRelativeY() + " map=" + screen + ']';
+      return "TraceResult[" + "x=" + cursor.getRelativeX() + " y=" + cursor.getRelativeY() + " map=" + screen + ']';
     }
 
     @Override
@@ -55,12 +55,12 @@ public interface ScreenTracer {
       if (this == o) return true;
       if (o == null || getClass() != o.getClass()) return false;
       TraceResult that = (TraceResult) o;
-      return Objects.equals(screen, that.screen) && Objects.equals(coordinates, that.coordinates);
+      return Objects.equals(screen, that.screen) && Objects.equals(cursor, that.cursor);
     }
 
     @Override
     public int hashCode() {
-      return Objects.hash(screen, coordinates);
+      return Objects.hash(screen, cursor);
     }
   }
 

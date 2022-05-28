@@ -1,6 +1,6 @@
 package net.anweisen.displaycraft.api.implementation;
 
-import net.anweisen.displaycraft.api.Coordinates;
+import net.anweisen.displaycraft.api.Cursor;
 import net.anweisen.displaycraft.api.Direction;
 import net.anweisen.displaycraft.api.Position;
 import net.anweisen.displaycraft.api.ScreenTracer;
@@ -41,7 +41,7 @@ public class ScreenTracerImpl implements ScreenTracer {
 
         return new TraceResult(
           Position.from(position.getBlockX(), position.getBlockY(), position.getBlockZ(), axis),
-          Coordinates.fromRelatives(relX, relY, resolution)
+          Cursor.fromRelatives(relX, relY, resolution)
         );
       }
 
