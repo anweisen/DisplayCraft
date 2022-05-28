@@ -9,12 +9,12 @@ import java.util.Objects;
  * @author anweisen | https://github.com/anweisen
  * @since 1.0
  */
-public class Coordinates {
+public class Cursor {
 
   private final float relativeX, relativeY;
   private final int absoluteX, absoluteY;
 
-  public Coordinates(@Nonnegative float relativeX, @Nonnegative float relativeY, @Nonnegative int absoluteX, @Nonnegative int absoluteY) {
+  public Cursor(@Nonnegative float relativeX, @Nonnegative float relativeY, @Nonnegative int absoluteX, @Nonnegative int absoluteY) {
     this.relativeX = relativeX;
     this.relativeY = relativeY;
     this.absoluteX = absoluteX;
@@ -22,28 +22,33 @@ public class Coordinates {
   }
 
   @Nonnull
-  public static Coordinates fromRelatives(float relativeX, float relativeY, int resolution) {
+  public static Cursor fromRelatives(float relativeX, float relativeY, int resolution) {
     return fromRelatives(relativeX, relativeY, resolution, resolution);
   }
 
   @Nonnull
-  public static Coordinates fromRelatives(float relativeX, float relativeY, int resolutionX, int resolutionY) {
-    return new Coordinates(relativeX, relativeY, (int) ((resolutionX - 1) * relativeX), (int) ((resolutionY - 1) * relativeY));
+  public static Cursor fromRelatives(float relativeX, float relativeY, int resolutionX, int resolutionY) {
+    return new Cursor(relativeX, relativeY, (int) ((resolutionX - 1) * relativeX), (int) ((resolutionY - 1) * relativeY));
   }
 
   @Nonnull
-  public static Coordinates fromAbsolutes(int absoluteX, int absoluteY, int resolution) {
+  public static Cursor scaleRelatives(@Nonnull Cursor relatives, int x, int y, int sizeX, int sizeY, int tileResolution) {
+    return fromRelatives((x + relatives.getRelativeX()) / sizeX, (y + relatives.getRelativeY()) / sizeY, tileResolution * sizeX, tileResolution * sizeY);
+  }
+
+  @Nonnull
+  public static Cursor fromAbsolutes(int absoluteX, int absoluteY, int resolution) {
     return fromAbsolutes(absoluteX, absoluteY, resolution, resolution);
   }
 
   @Nonnull
-  public static Coordinates fromAbsolutes(int absoluteX, int absoluteY, int resolutionX, int resolutionY) {
-    return new Coordinates((float) resolutionX / absoluteX, (float) resolutionY / absoluteY, absoluteX, absoluteY);
+  public static Cursor fromAbsolutes(int absoluteX, int absoluteY, int resolutionX, int resolutionY) {
+    return new Cursor((float) resolutionX / absoluteX, (float) resolutionY / absoluteY, absoluteX, absoluteY);
   }
 
   @Nonnull
-  public static Coordinates from(float relativeX, float relativeY, int absoluteX, int absoluteY) {
-    return new Coordinates(relativeX, relativeY, absoluteX, absoluteY);
+  public static Cursor from(float relativeX, float relativeY, int absoluteX, int absoluteY) {
+    return new Cursor(relativeX, relativeY, absoluteX, absoluteY);
   }
 
   public float getRelativeX() {
@@ -64,8 +69,8 @@ public class Coordinates {
 
   @Nonnull
   @CheckReturnValue
-  public Coordinates multiply(float x, float y) {
-    return new Coordinates(relativeX * x, relativeY * y, (int) (absoluteX * x), (int) (absoluteY * y));
+  public Cursor multiply(float x, float y) {
+    return new Cursor(relativeX * x, relativeY * y, (int) (absoluteX * x), (int) (absoluteY * y));
   }
 
   @Override
@@ -77,7 +82,7 @@ public class Coordinates {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    Coordinates that = (Coordinates) o;
+    Cursor that = (Cursor) o;
     return Float.compare(that.relativeX, relativeX) == 0 && Float.compare(that.relativeY, relativeY) == 0 && absoluteX == that.absoluteX && absoluteY == that.absoluteY;
   }
 
