@@ -6,9 +6,11 @@ import net.anweisen.displaycraft.api.implementation.DisplayProviderImpl;
 import net.anweisen.displaycraft.api.implementation.ScreenTracerImpl;
 import net.anweisen.displaycraft.nms.NmsProvider;
 import net.anweisen.displaycraft.nms.Reflect;
-import org.bukkit.event.Listener;
+import net.anweisen.utility.common.misc.ReflectionUtils;
+import org.bukkit.map.MapPalette;
 import org.bukkit.plugin.java.JavaPlugin;
 import javax.annotation.Nonnull;
+import java.awt.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -16,7 +18,7 @@ import java.util.concurrent.ScheduledExecutorService;
  * @author anweisen | https://github.com/anweisen
  * @since 1.0
  */
-public class DisplayCraft extends JavaPlugin implements Listener {
+public class DisplayCraft extends JavaPlugin {
 
   private static DisplayCraft instance;
   private ScheduledExecutorService executorService;

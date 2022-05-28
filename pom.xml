@@ -5,40 +5,25 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>net.anweisen.displaycraft</groupId>
-	<artifactId>plugin</artifactId>
+	<artifactId>root</artifactId>
+	<packaging>pom</packaging>
 	<version>1.0</version>
 
+	<modules>
+		<module>desktop</module>
+		<module>api</module>
+	</modules>
+
 	<properties>
-		<maven.compiler.source>16</maven.compiler.source>
-		<maven.compiler.target>16</maven.compiler.target>
+		<java.version>16</java.version>
 		<utility.version>1.4</utility.version>
-<!--		<spigot.version>1.17-R0.1-SNAPSHOT</spigot.version>-->
+		<!--<spigot.version>1.17-R0.1-SNAPSHOT</spigot.version>-->
 		<spigot.version>1.18.2-R0.1-SNAPSHOT</spigot.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
 	</properties>
 
-	<dependencies>
 
-		<dependency>
-			<groupId>org.spigotmc</groupId>
-			<artifactId>spigot-api</artifactId>
-			<version>${spigot.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.spigotmc</groupId>
-			<artifactId>spigot</artifactId>
-			<version>${spigot.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>net.anweisen.utility</groupId>
-			<artifactId>common-utils</artifactId>
-			<version>${utility.version}</version>
-		</dependency>
-
-	</dependencies>
 
 	<repositories>
 

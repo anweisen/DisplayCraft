@@ -3,3 +3,6 @@ author: anweisen
 main: net.anweisen.displaycraft.DisplayCraft
 version: 1.0
 api-version: 1.13
+
+commands:
+  display-craft:
