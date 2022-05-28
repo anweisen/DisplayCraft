@@ -39,6 +39,12 @@ public class ScreenTracerImpl implements ScreenTracer {
         float relX = opposite == Direction.SOUTH || opposite == Direction.WEST ? 1 - (float) (axis.getModX() != 0 ? relative.getZ() : relative.getX()) : (float) (axis.getModX() != 0 ? relative.getZ() : relative.getX());
         float relY = 1 - (float) relative.getY();
 
+        // map relatives into bounds, should never be outside, but we're on the safe side
+        if (relY > 1) relY = 1;
+        if (relX > 1) relX = 1;
+        if (relX < 0) relX = 0;
+        if (relY < 0) relX = 0;
+
         return new TraceResult(
           Position.from(position.getBlockX(), position.getBlockY(), position.getBlockZ(), axis),
           Cursor.fromRelatives(relX, relY, resolution)
