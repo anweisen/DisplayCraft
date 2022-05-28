@@ -1,5 +1,6 @@
 package net.anweisen.displaycraft.api.implementation.image;
 
+import net.anweisen.displaycraft.api.image.Dimensions;
 import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.api.image.Images;
 import javax.annotation.Nonnull;
@@ -68,6 +69,11 @@ public class ImageImpl implements Image {
   }
 
   @Override
+  public void fillRect(@Nonnull Dimensions dimensions) {
+    fillRect(dimensions.getX(), dimensions.getY(), dimensions.getWidth(), dimensions.getHeight());
+  }
+
+  @Override
   public void drawImage(int x, int y, @Nonnull Image image) {
     Images.checkBounds(x, image.getWidth(), this.width);
     Images.checkBounds(y, image.getHeight(), this.height);
@@ -83,6 +89,12 @@ public class ImageImpl implements Image {
   @Override
   public Image clipImage(int x, int y, int width, int height) {
     return Images.clipImage(x, y, width, height, this.width, content);
+  }
+
+  @Nonnull
+  @Override
+  public Image clipImage(@Nonnull Dimensions dimensions) {
+    return clipImage(dimensions.getX(), dimensions.getY(), dimensions.getWidth(), dimensions.getHeight());
   }
 
   @Nonnull
