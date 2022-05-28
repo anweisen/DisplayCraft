@@ -32,8 +32,8 @@ public class Cursor {
   }
 
   @Nonnull
-  public static Cursor scaleRelatives(@Nonnull Cursor relatives, int x, int y, int sizeX, int sizeY, int tileResolution) {
-    return fromRelatives((x + relatives.getRelativeX()) / sizeX, (y + relatives.getRelativeY()) / sizeY, tileResolution * sizeX, tileResolution * sizeY);
+  public static Cursor scaleRelatives(@Nonnull Cursor relatives, int screenX, int screenY, int amountX, int amountY, int tileResolution) {
+    return fromRelatives((screenX + relatives.getRelativeX()) / amountX, (screenY + relatives.getRelativeY()) / amountY, tileResolution * amountX, tileResolution * amountY);
   }
 
   @Nonnull

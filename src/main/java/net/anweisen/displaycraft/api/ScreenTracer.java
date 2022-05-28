@@ -16,10 +16,10 @@ public interface ScreenTracer {
    * There is no guaranty that there is actually a map, you have to validate the result your self.
    *
    * @param axis        the direction of the pending map(s)
-   * @param coordinate  the block coordinate of the screen map on the wall axis (not the given axis)
+   * @param coordinate  the block coordinate of the screen map on the wall axis (not the given axis!)
    * @param origin      the origin location and looking direction
    * @param maxDistance the max distance from the origin in blocks
-   * @param resolution  the resolution of the trace result
+   * @param resolution  the resolution of the target screen and upcoming trace result
    * @return a new trace result or null if the sight won't hit the screen wall within the maxDistance
    */
   @Nullable
