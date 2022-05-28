@@ -28,10 +28,10 @@ public final class Images {
   }
 
   @Nonnull
-  public static Image clipImage(int x, int y, int width, int height, int originalWidth, @Nonnull byte[] content) {
+  public static Image clipImage(int x, int y, int width, int height, int originalWidth, @Nonnull byte[] original) {
     byte[] result = new byte[width * height];
     for (int i = 0; i < height; i++) {
-      System.arraycopy(content, (i + y) * originalWidth + x, result, i * width, width);
+      System.arraycopy(original, (i + y) * originalWidth + x, result, i * width, width);
     }
     return newImage(width, height, result);
   }
