@@ -39,6 +39,16 @@ public class ImageImpl implements Image {
   }
 
   @Override
+  public byte getColor() {
+    return color;
+  }
+
+  @Override
+  public void setColor(byte color) {
+    this.color = color;
+  }
+
+  @Override
   public void fillRect(int x, int y, int width, int height) {
     Images.checkBounds(x, width, this.width);
     Images.checkBounds(y, height, this.height);
@@ -50,16 +60,6 @@ public class ImageImpl implements Image {
         content[i * this.width + j] = color;
       }
     }
-  }
-
-  @Override
-  public byte getColor() {
-    return color;
-  }
-
-  @Override
-  public void setColor(byte color) {
-    this.color = color;
   }
 
   @Nonnull

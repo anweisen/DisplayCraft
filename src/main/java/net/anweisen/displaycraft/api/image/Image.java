@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
  * and converting these objects afterwards is taking too much time (up to 200ms).
  *
  * @author anweisen | https://github.com/anweisen
+ * @see Images
  * @since 1.0
  */
 public interface Image {
@@ -18,11 +19,11 @@ public interface Image {
   @Nonnegative
   int getHeight();
 
-  void fillRect(int x, int y, int width, int height);
-
   byte getColor();
 
   void setColor(byte color);
+
+  void fillRect(int x, int y, int width, int height);
 
   @Nonnull
   Image clipImage(int x, int y, int width, int height);
