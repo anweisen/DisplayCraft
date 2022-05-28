@@ -1,0 +1,88 @@
+package net.anweisen.displaycraft.api;
+
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
+import java.util.Objects;
+
+/**
+ * @author anweisen | https://github.com/anweisen
+ * @since 1.0
+ */
+public class Coordinates {
+
+  private final float relativeX, relativeY;
+  private final int absoluteX, absoluteY;
+
+  public Coordinates(@Nonnegative float relativeX, @Nonnegative float relativeY, @Nonnegative int absoluteX, @Nonnegative int absoluteY) {
+    this.relativeX = relativeX;
+    this.relativeY = relativeY;
+    this.absoluteX = absoluteX;
+    this.absoluteY = absoluteY;
+  }
+
+  @Nonnull
+  public static Coordinates fromRelatives(float relativeX, float relativeY, int resolution) {
+    return fromRelatives(relativeX, relativeY, resolution, resolution);
+  }
+
+  @Nonnull
+  public static Coordinates fromRelatives(float relativeX, float relativeY, int resolutionX, int resolutionY) {
+    return new Coordinates(relativeX, relativeY, (int) ((resolutionX - 1) * relativeX), (int) ((resolutionY - 1) * relativeY));
+  }
+
+  @Nonnull
+  public static Coordinates fromAbsolutes(int absoluteX, int absoluteY, int resolution) {
+    return fromAbsolutes(absoluteX, absoluteY, resolution, resolution);
+  }
+
+  @Nonnull
+  public static Coordinates fromAbsolutes(int absoluteX, int absoluteY, int resolutionX, int resolutionY) {
+    return new Coordinates((float) resolutionX / absoluteX, (float) resolutionY / absoluteY, absoluteX, absoluteY);
+  }
+
+  @Nonnull
+  public static Coordinates from(float relativeX, float relativeY, int absoluteX, int absoluteY) {
+    return new Coordinates(relativeX, relativeY, absoluteX, absoluteY);
+  }
+
+  public float getRelativeX() {
+    return relativeX;
+  }
+
+  public float getRelativeY() {
+    return relativeY;
+  }
+
+  public int getAbsoluteX() {
+    return absoluteX;
+  }
+
+  public int getAbsoluteY() {
+    return absoluteY;
+  }
+
+  @Nonnull
+  @CheckReturnValue
+  public Coordinates multiply(float x, float y) {
+    return new Coordinates(relativeX * x, relativeY * y, (int) (absoluteX * x), (int) (absoluteY * y));
+  }
+
+  @Override
+  public String toString() {
+    return "Coordinates[" + "x=" + relativeX + " y=" + relativeY + " X=" + absoluteX + " Y=" + absoluteY + ']';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Coordinates that = (Coordinates) o;
+    return Float.compare(that.relativeX, relativeX) == 0 && Float.compare(that.relativeY, relativeY) == 0 && absoluteX == that.absoluteX && absoluteY == that.absoluteY;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(relativeX, relativeY, absoluteX, absoluteY);
+  }
+}

@@ -1,6 +1,7 @@
 package net.anweisen.displaycraft.api;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.util.Vector;
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -55,6 +56,11 @@ public class Position {
 
   public int getAxis() {
     return direction.getAxis(x, y, z);
+  }
+
+  @Nonnull
+  public Location toLocation(@Nonnull World world) {
+    return new Location(world, x, y, z).setDirection(direction.getVector());
   }
 
   @Override

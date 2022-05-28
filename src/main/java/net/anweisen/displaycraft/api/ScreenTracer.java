@@ -27,15 +27,12 @@ public interface ScreenTracer {
 
   final class TraceResult {
     private final Position screen;
-    private final float relX, relY;
-    private final int absX, absY;
 
-    public TraceResult(@Nonnull Position screen, float relX, float relY, int absX, int absY) {
+    private final Coordinates coordinates;
+
+    public TraceResult(@Nonnull Position screen, @Nonnull Coordinates coordinates) {
       this.screen = screen;
-      this.relX = relX;
-      this.relY = relY;
-      this.absX = absX;
-      this.absY = absY;
+      this.coordinates = coordinates;
     }
 
     @Nonnull
@@ -43,25 +40,14 @@ public interface ScreenTracer {
       return screen;
     }
 
-    public float getRelativeX() {
-      return relX;
-    }
-
-    public float getRelativeY() {
-      return relY;
-    }
-
-    public int getAbsoluteX() {
-      return absX;
-    }
-
-    public int getAbsoluteY() {
-      return absY;
+    @Nonnull
+    public Coordinates getCoordinates() {
+      return coordinates;
     }
 
     @Override
     public String toString() {
-      return "TraceResult[" + "x=" + relX + " y=" + relY + " at=" + screen + ']';
+      return "TraceResult[" + "x=" + coordinates.getRelativeX() + " y=" + coordinates.getRelativeY() + " map=" + screen + ']';
     }
 
     @Override
@@ -69,12 +55,12 @@ public interface ScreenTracer {
       if (this == o) return true;
       if (o == null || getClass() != o.getClass()) return false;
       TraceResult that = (TraceResult) o;
-      return Float.compare(that.relX, relX) == 0 && Float.compare(that.relY, relY) == 0 && Objects.equals(screen, that.screen);
+      return Objects.equals(screen, that.screen) && Objects.equals(coordinates, that.coordinates);
     }
 
     @Override
     public int hashCode() {
-      return Objects.hash(screen, relX, relY);
+      return Objects.hash(screen, coordinates);
     }
   }
 

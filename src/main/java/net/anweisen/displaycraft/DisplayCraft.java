@@ -31,6 +31,8 @@ public class DisplayCraft extends JavaPlugin implements Listener {
 
   @Override
   public void onLoad() {
+    instance = this;
+
     getLogger().info("Detected server version " + Reflect.VERSION + " at " + Reflect.CRAFTBUKKIT_PREFIX + "/" + Reflect.MINECRAFT_PREFIX);
 
     executorService = Executors.newScheduledThreadPool(3);

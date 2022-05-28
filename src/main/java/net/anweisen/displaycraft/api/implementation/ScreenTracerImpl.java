@@ -1,5 +1,6 @@
 package net.anweisen.displaycraft.api.implementation;
 
+import net.anweisen.displaycraft.api.Coordinates;
 import net.anweisen.displaycraft.api.Direction;
 import net.anweisen.displaycraft.api.Position;
 import net.anweisen.displaycraft.api.ScreenTracer;
@@ -37,10 +38,11 @@ public class ScreenTracerImpl implements ScreenTracer {
         Location relative = position.clone().subtract(position.getBlockX(), position.getBlockY(), position.getBlockZ());
         float relX = opposite == Direction.SOUTH || opposite == Direction.WEST ? 1 - (float) (axis.getModX() != 0 ? relative.getZ() : relative.getX()) : (float) (axis.getModX() != 0 ? relative.getZ() : relative.getX());
         float relY = 1 - (float) relative.getY();
-        int absX = (int) ((resolution - 1) * relX);
-        int absY = (int) ((resolution - 1) * relY);
 
-        return new TraceResult(Position.from(position.getBlockX(), position.getBlockY(), position.getBlockZ(), axis), relX, relY, absX, absY);
+        return new TraceResult(
+          Position.from(position.getBlockX(), position.getBlockY(), position.getBlockZ(), axis),
+          Coordinates.fromRelatives(relX, relY, resolution)
+        );
       }
 
       lastDistance = distance;
