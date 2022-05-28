@@ -75,7 +75,7 @@ public class Cursor {
 
   @Override
   public String toString() {
-    return "Coordinates[" + "x=" + relativeX + " y=" + relativeY + " X=" + absoluteX + " Y=" + absoluteY + ']';
+    return "Cursor[" + "x=" + relativeX + " y=" + relativeY + " X=" + absoluteX + " Y=" + absoluteY + ']';
   }
 
   @Override
