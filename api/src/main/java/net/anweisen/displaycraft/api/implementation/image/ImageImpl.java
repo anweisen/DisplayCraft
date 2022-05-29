@@ -113,7 +113,7 @@ public class ImageImpl implements Image {
   @Override
   public byte getPixel(int x, int y) {
     Images.checkBounds(x, y, width, height);
-    return content[y * height + x];
+    return content[y * width + x];
   }
 
   @Nonnull
