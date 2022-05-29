@@ -49,6 +49,11 @@ public class Dimensions {
   }
 
   @Nonnull
+  public static Dimensions from(int x, int y, int width, int height) {
+    return new Dimensions(x, y, width, height);
+  }
+
+  @Nonnull
   public static Dimensions from(@Nonnull Image image) {
     return new Dimensions(0, 0, image.getWidth(), image.getHeight());
   }
