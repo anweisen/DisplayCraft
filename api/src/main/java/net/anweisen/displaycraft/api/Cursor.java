@@ -15,6 +15,9 @@ public class Cursor {
   private final int absoluteX, absoluteY;
 
   public Cursor(@Nonnegative float relativeX, @Nonnegative float relativeY, @Nonnegative int absoluteX, @Nonnegative int absoluteY) {
+    if (relativeX < 0 || relativeX > 1 || relativeY < 0 || relativeY > 0)
+      throw new IllegalArgumentException("Relative positions have to be between 0 and 1");
+
     this.relativeX = relativeX;
     this.relativeY = relativeY;
     this.absoluteX = absoluteX;
