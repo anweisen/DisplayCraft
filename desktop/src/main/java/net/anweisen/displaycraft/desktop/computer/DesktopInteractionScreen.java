@@ -121,18 +121,20 @@ public class DesktopInteractionScreen {
     }
   }
 
-  public void create(@Nonnull Player player) {
-    for (var array : position) {
-      for (var position : array) {
-        DisplayCraft.getInstance().getDisplayProvider().create(player, position.getFirst(), position.getSecond());
+  public int[][] create(@Nonnull Player player) {
+    int[][] ids = new int[sizeY][sizeX];
+    for (int y = 0; y < sizeY; y++) {
+      for (int x = 0; x < sizeX; x++) {
+        ids[y][x] = DisplayCraft.getInstance().getDisplayProvider().create(player, position[y][x].getFirst(), position[y][x].getSecond());
       }
     }
+    return ids;
   }
 
-  public void destroy(@Nonnull Player player) {
-    for (var array : position) {
-      for (var position : array) {
-        DisplayCraft.getInstance().getDisplayProvider().destroy(player, position.getSecond());
+  public void destroy(@Nonnull Player player, int[][] ids) {
+    for (var array : ids) {
+      for (var id : array) {
+        DisplayCraft.getInstance().getDisplayProvider().destroy(player, id);
       }
     }
   }
