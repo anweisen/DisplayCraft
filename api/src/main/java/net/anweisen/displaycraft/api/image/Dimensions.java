@@ -43,6 +43,11 @@ public class Dimensions {
     return new Dimensions(x - width, y - height, width, height);
   }
 
+  @Nonnull
+  public static Dimensions fromHotspot(int x, int y, int hotspotX, int hotspotY, int width, int height) {
+    return new Dimensions(x - hotspotX, hotspotY - y, width, height);
+  }
+
   public void verify(int maxWidth, int maxHeight) {
     if (x < 0 || y < 0 || width <= 0 || height <= 0)
       throw new IllegalArgumentException("Dimension position cannot be negative, size cannot be zero");
