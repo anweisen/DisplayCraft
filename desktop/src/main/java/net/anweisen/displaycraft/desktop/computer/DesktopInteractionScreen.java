@@ -105,17 +105,19 @@ public class DesktopInteractionScreen {
     return null;
   }
 
-  public void render(@Nonnull Collection<? extends Player> viewers, @Nonnull Image image) {
+  public void render(@Nonnull Collection<? extends Player> viewers, @Nonnull Image image, @Nonnull RenderFilter filter) {
     if (image.getWidth() != width || image.getHeight() != height)
-      throw new IllegalArgumentException("Dimensions of image and screen dont match (" + width + ", " + height + ") != (" + image.getWidth() + ", " + image.getHeight() + ")");
+      throw new IllegalArgumentException("Dimensions of given image and screen dont match (" + width + ", " + height + ") != (" + image.getWidth() + ", " + image.getHeight() + ")");
 
     for (int y = 0; y < sizeY; y++) {
       for (int x = 0; x < sizeX; x++) {
         int mapId = position[y][x].getSecond();
         Image clip = image.clipImage(x * resolution, y * resolution, resolution, resolution);
 
-        for (Player player : viewers) {
-          DisplayCraft.getInstance().getDisplayProvider().render(player, mapId, clip);
+        if (filter.shouldRender(clip, x, y)) {
+          for (Player player : viewers) {
+            DisplayCraft.getInstance().getDisplayProvider().render(player, mapId, clip);
+          }
         }
       }
     }
@@ -177,5 +179,10 @@ public class DesktopInteractionScreen {
 
   public int getCoordinate() {
     return coordinate;
+  }
+
+  @FunctionalInterface
+  public interface RenderFilter {
+    boolean shouldRender(@Nonnull Image image, int x, int y);
   }
 }

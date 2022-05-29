@@ -23,7 +23,7 @@ public class PlayerInteractionListener implements Listener {
     };
 
     for (DesktopComputer computer : DesktopComputer.getInstances()) {
-      if (computer.handleClick(event.getPlayer(), right)) {
+      if (computer.handleCursorClick(event.getPlayer(), right)) {
         event.setCancelled(true);
       }
     }

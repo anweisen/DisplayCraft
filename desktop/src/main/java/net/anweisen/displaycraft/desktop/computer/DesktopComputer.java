@@ -1,15 +1,15 @@
 package net.anweisen.displaycraft.desktop.computer;
 
-import net.anweisen.displaycraft.DisplayCraft;
 import net.anweisen.displaycraft.api.Cursor;
+import net.anweisen.displaycraft.desktop.computer.component.DesktopComponentHandler;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorClickListener;
-import org.bukkit.Bukkit;
+import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorMoveListener;
+import net.anweisen.displaycraft.desktop.computer.render.DesktopRenderHandler;
 import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author anweisen | https://github.com/anweisen
@@ -21,14 +21,19 @@ public class DesktopComputer {
 
   private final DesktopInteractionScreen screen;
   private final DesktopInteractionCursor cursor;
-
+  private final DesktopPlayerBridge playerBridge;
+  private final DesktopRenderHandler renderHandler;
+  private final DesktopComponentHandler componentHandler;
   private final Collection<DesktopCursorClickListener> clickListeners = new CopyOnWriteArrayList<>();
-
-  private ScheduledFuture<?> cursorTask;
+  private final Collection<DesktopCursorMoveListener> moveListeners = new CopyOnWriteArrayList<>();
 
   public DesktopComputer(@Nonnull DesktopInteractionScreen screen, @Nonnull DesktopInteractionCursor cursor) {
     this.screen = screen;
     this.cursor = cursor;
+
+    this.playerBridge = new DesktopPlayerBridge(this);
+    this.renderHandler = new DesktopRenderHandler(this);
+    this.componentHandler = new DesktopComponentHandler(this);
 
     instances.add(this);
   }
@@ -38,37 +43,59 @@ public class DesktopComputer {
     return instances;
   }
 
-  // TODO maybe in cursor class? idk man
-  public void scheduleCursorUpdates(float updatesPerSecond, int maxDistance) {
-    if (cursorTask != null)
-      cursorTask.cancel(true);
-
-    long delay = (long) (1000 / updatesPerSecond);
-    cursorTask = DisplayCraft.getInstance().getExecutorService().scheduleAtFixedRate(() -> {
-      for (Player player : Bukkit.getOnlinePlayers()) {
-        // TODO somehow keep track of what players even have the computer
-        cursor.update(screen, player, maxDistance);
-      }
-    }, delay, delay, TimeUnit.MILLISECONDS);
+  public void startTasks() {
+    cursor.startUpdatesTask(this);
   }
 
   // TODO this is actually internal
-  public boolean handleClick(@Nonnull Player player, boolean right) {
-    Cursor cursor = this.cursor.getCursor(player);
-    if (cursor != null) {
-      for (DesktopCursorClickListener listener : clickListeners) {
-        try {
-          listener.handleClick(this, player, cursor, right);
-        } catch (Exception ex) {
-          ex.printStackTrace();
-        }
+  public boolean handleCursorClick(@Nonnull Player player, boolean right) {
+    Cursor cursor = this.cursor.getCursorPosition(player);
+    if (cursor == null) return false;
+    for (DesktopCursorClickListener listener : clickListeners) {
+      try {
+        listener.handleClick(this, player, cursor, right);
+      } catch (Exception ex) {
+        ex.printStackTrace();
       }
     }
-    return cursor != null;
+    return true;
+  }
+
+  public void handleCursorMove(@Nonnull Player player, @Nonnull Cursor from, @Nonnull Cursor to) {
+    for (DesktopCursorMoveListener listener : moveListeners) {
+      try {
+        listener.handleMove(this, player, from, to);
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
+    }
   }
 
   public void registerCursorClickListener(@Nonnull DesktopCursorClickListener listener) {
     clickListeners.add(listener);
+  }
+
+  public void registerCursorMoveListener(@Nonnull DesktopCursorMoveListener listener) {
+    moveListeners.add(listener);
+  }
+
+  public void render() {
+    renderHandler.render(playerBridge.getPlayers());
+  }
+
+  public void createScreen(@Nonnull Player player) {
+    playerBridge.createScreen(player);
+    renderHandler.renderLast(Collections.singleton(player));
+  }
+
+  public void destroyScreen(@Nonnull Player player) {
+    playerBridge.destroyScreen(player);
+  }
+
+  public void destroy() {
+    for (Player player : playerBridge.getPlayers()) {
+      destroyScreen(player);
+    }
   }
 
   @Nonnull
@@ -79,5 +106,20 @@ public class DesktopComputer {
   @Nonnull
   public DesktopInteractionCursor getCursor() {
     return cursor;
+  }
+
+  @Nonnull
+  public DesktopPlayerBridge getPlayerBridge() {
+    return playerBridge;
+  }
+
+  @Nonnull
+  public DesktopRenderHandler getRenderHandler() {
+    return renderHandler;
+  }
+
+  @Nonnull
+  public DesktopComponentHandler getComponentHandler() {
+    return componentHandler;
   }
 }
