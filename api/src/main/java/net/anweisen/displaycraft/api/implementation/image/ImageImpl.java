@@ -80,7 +80,9 @@ public class ImageImpl implements Image {
 
     for (int i = 0; i < image.getHeight(); i++) {
       for (int j = 0; j < image.getWidth(); j++) {
-        content[(i + y) * width + x + j] = image.getPixel(j, i);
+        byte pixel = image.getPixel(j, i);
+        if (pixel == 0) continue; // 0 = transparent
+        content[(i + y) * width + x + j] = pixel;
       }
     }
   }
