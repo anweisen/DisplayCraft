@@ -6,11 +6,8 @@ import net.anweisen.displaycraft.api.implementation.DisplayProviderImpl;
 import net.anweisen.displaycraft.api.implementation.ScreenTracerImpl;
 import net.anweisen.displaycraft.nms.NmsProvider;
 import net.anweisen.displaycraft.nms.Reflect;
-import net.anweisen.utility.common.misc.ReflectionUtils;
-import org.bukkit.map.MapPalette;
 import org.bukkit.plugin.java.JavaPlugin;
 import javax.annotation.Nonnull;
-import java.awt.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
