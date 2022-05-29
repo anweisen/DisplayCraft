@@ -31,6 +31,10 @@ public interface Image {
 
   void drawImage(int x, int y, @Nonnull Image image);
 
+  void drawImagePart(int destinationX, int destinationY, int sourceX, int sourceY, int width, int height, @Nonnull Image image);
+
+  void drawImagePart(int destinationX, int destinationY, @Nonnull Dimensions dimensions, @Nonnull Image image);
+
   @Nonnull
   Image clipImage(int x, int y, int width, int height);
 

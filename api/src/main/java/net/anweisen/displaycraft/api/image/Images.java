@@ -46,14 +46,21 @@ public final class Images {
       throw new IllegalArgumentException("Given positioning out of bounds (" + position + " + " + size + " > " + max + ")");
   }
 
-  public static void checkBounds(int x, int y, int width, int height) {
+  public static void checkPosition(int x, int y, int width, int height) {
     if (x < 0 || y < 0 || x >= width || y >= height)
-      throw new IllegalArgumentException("Given bounds outside image size! given: (" + x + ", " + y + ") size: (" + width + ", " + height + ")");
+      throw new IllegalArgumentException("Given position outside image size! given: (" + x + ", " + y + ") size: (" + width + ", " + height + ")");
   }
 
   public static void checkResolution(int width, int height, int size) {
     if (width * height != size)
       throw new IllegalArgumentException("Given resolutions dont match (" + width + ", " + height + " != " + size + ")");
+  }
+
+  public static void checkSizes(int width, int height) {
+    if (width < 1)
+      throw new IllegalArgumentException("Width cannot be negative or zero");
+    if (height < 1)
+      throw new IllegalArgumentException("Height cannot be negative or zero");
   }
 
 }
