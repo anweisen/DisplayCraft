@@ -5,15 +5,23 @@ import net.anweisen.displaycraft.api.Cursor;
 import net.anweisen.displaycraft.api.Direction;
 import net.anweisen.displaycraft.api.Position;
 import net.anweisen.displaycraft.api.image.Dimensions;
+import net.anweisen.displaycraft.api.image.DrawHelper;
+import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.api.image.Images;
 import net.anweisen.displaycraft.desktop.computer.DesktopComputer;
 import net.anweisen.displaycraft.desktop.computer.DesktopInteractionCursor;
 import net.anweisen.displaycraft.desktop.computer.DesktopInteractionScreen;
+import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorClickListener;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorDisplay;
+import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorMoveListener;
+import net.anweisen.displaycraft.desktop.computer.render.DesktopRenderer;
 import net.anweisen.displaycraft.desktop.listener.PlayerInteractionListener;
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapPalette;
 import org.bukkit.plugin.java.JavaPlugin;
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -38,26 +46,25 @@ public class DisplayCraftDesktop extends JavaPlugin {
     );
     computer.startTasks();
 
+    Drawing drawing = new Drawing();
+    computer.registerCursorClickListener(drawing);
+    computer.registerCursorMoveListener(drawing);
+
     computer.getRenderHandler().registerRendererBefore((__, image) -> {
       image.setColor(MapPalette.WHITE);
       image.fillRect(Dimensions.from(image));
     });
+    computer.getRenderHandler().registerRendererAfter(drawing);
     computer.getRenderHandler().registerRendererAfter((__, image) -> {
       for (Cursor cursor : computer.getCursor().getCursorPositions()) {
-//        System.out.println(cursor);
-        DesktopCursorDisplay.getDefault().draw(image, cursor);
+        DesktopCursorDisplay.getCrosshair().draw(image, cursor);
       }
-    });
-    computer.registerCursorClickListener(((__, player, cursor, right) -> {
-      player.sendMessage(cursor.toString() + "   " + right);
-    }));
-    computer.registerCursorMoveListener((__, player, from, to) -> {
     });
 
     DisplayCraft.getInstance().getExecutorService().scheduleAtFixedRate(() -> {
-//      long start = System.nanoTime();
+      long start = System.nanoTime();
       computer.render();
-//      System.out.println(System.nanoTime() - start + "");
+      System.out.println(System.nanoTime() - start + "");
     }, 100, 1000 / 20, TimeUnit.MILLISECONDS);
 
     DisplayCraft.getInstance().getCommand("display-craft").setExecutor((sender, command, label, args) -> {
@@ -70,5 +77,37 @@ public class DisplayCraftDesktop extends JavaPlugin {
   @Override
   public void onDisable() {
     computer.destroy();
+  }
+
+  public class Drawing implements DesktopRenderer, DesktopCursorClickListener, DesktopCursorMoveListener {
+
+    private final Collection<Player> drawing = new ArrayList<>();
+    private Image image;
+
+    @Override
+    public void render(@Nonnull DesktopComputer computer, @Nonnull Image output) {
+      if (image == null) image = output;
+      output.drawImage(0, 0, image);
+    }
+
+    @Override
+    public void handleClick(@Nonnull DesktopComputer computer, @Nonnull Player player, @Nonnull Cursor cursor, boolean right) {
+      if (right) {
+        image.setColor(MapPalette.LIGHT_GREEN);
+        DrawHelper.fillBucket(image, image.getPixel(cursor.getAbsoluteX(), cursor.getAbsoluteY()), cursor.getAbsoluteX(), cursor.getAbsoluteY());
+        return;
+      }
+
+      if (drawing.contains(player)) drawing.remove(player);
+      else drawing.add(player);
+    }
+
+    @Override
+    public void handleMove(@Nonnull DesktopComputer computer, @Nonnull Player player, @Nonnull Cursor from, @Nonnull Cursor to) {
+      if (drawing.contains(player)) {
+        image.setColor(MapPalette.LIGHT_GREEN);
+        image.drawStroke(from.getAbsoluteX(), from.getAbsoluteY(), to.getAbsoluteX(), to.getAbsoluteY(), 3);
+      }
+    }
   }
 }
