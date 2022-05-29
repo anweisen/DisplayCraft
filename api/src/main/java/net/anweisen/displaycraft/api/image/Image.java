@@ -29,6 +29,8 @@ public interface Image {
 
   void fillRect(@Nonnull Dimensions dimensions);
 
+  void drawStroke(int startX, int startY, int destinationX, int destinationY, int size);
+
   void drawImage(int x, int y, @Nonnull Image image);
 
   void drawImagePart(int destinationX, int destinationY, int sourceX, int sourceY, int width, int height, @Nonnull Image image);
@@ -43,6 +45,8 @@ public interface Image {
 
   @Nonnull
   Image copy();
+
+  boolean contains(int x, int y);
 
   byte getPixel(int x, int y);
 

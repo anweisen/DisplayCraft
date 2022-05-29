@@ -76,6 +76,22 @@ public class ImageImpl implements Image {
   }
 
   @Override
+  public void drawStroke(int startX, int startY, int destinationX, int destinationY, int size) {
+    int diffX = destinationX - startX;
+    int diffY = destinationY - startY;
+
+    int runs = Math.max(Math.abs(diffX), 1);
+    float fraction = (float) diffY / (float) runs;
+    int height = (int) Math.max(Math.ceil(Math.abs(fraction)), 1);
+    for (int i = 0; i < runs; i++) {
+      int x = diffX < 0 ? -i : i;
+      int y = (int) (i * fraction);
+
+      fillRect(Dimensions.from(startX + x, fraction < 0 ? startY + y - height : startY + y, size, height + size));
+    }
+  }
+
+  @Override
   public void drawImage(int x, int y, @Nonnull Image image) {
     drawImagePart(x, y, 0, 0, image.getWidth(), image.getHeight(), image);
   }
@@ -122,6 +138,11 @@ public class ImageImpl implements Image {
   @Override
   protected Image clone() {
     return this.copy();
+  }
+
+  @Override
+  public boolean contains(int x, int y) {
+    return x >= 0 && x < width && y >= 0 && y < height;
   }
 
   @Override
