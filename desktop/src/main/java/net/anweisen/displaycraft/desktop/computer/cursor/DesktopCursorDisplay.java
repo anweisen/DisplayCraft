@@ -48,6 +48,24 @@ public class DesktopCursorDisplay {
     }));
   }
 
+  @Nonnull
+  public static DesktopCursorDisplay getCrosshair() {
+    byte t = 0, b = -49, w = 32;
+    return new DesktopCursorDisplay(6, 6, Images.newImage(11, 11, new byte[]{
+      t, t, t, t, t, b, t, t, t, t, t,
+      t, t, t, t, t, b, t, t, t, t, t,
+      t, t, t, t, t, b, t, t, t, t, t,
+      t, t, t, t, t, b, t, t, t, t, t,
+      t, t, t, t, t, b, t, t, t, t, t,
+      b, b, b, b, b, b, b, b, b, b, b,
+      t, t, t, t, t, b, t, t, t, t, t,
+      t, t, t, t, t, b, t, t, t, t, t,
+      t, t, t, t, t, b, t, t, t, t, t,
+      t, t, t, t, t, b, t, t, t, t, t,
+      t, t, t, t, t, b, t, t, t, t, t,
+    }));
+  }
+
   public int getHotspotX() {
     return hotspotX;
   }
