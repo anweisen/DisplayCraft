@@ -20,52 +20,6 @@ public class DesktopCursorDisplay {
     this.image = image;
   }
 
-  @Nonnull
-  public static DesktopCursorDisplay getDefault() {
-    byte t = 0, b = -49, w = 32;
-    return new DesktopCursorDisplay(0, 0, Images.newImage(12, 21, new byte[]{
-      b, t, t, t, t, t, t, t, t, t, t, t,
-      b, b, t, t, t, t, t, t, t, t, t, t,
-      b, w, b, t, t, t, t, t, t, t, t, t,
-      b, w, w, b, t, t, t, t, t, t, t, t,
-      b, w, w, w, b, t, t, t, t, t, t, t,
-      b, w, w, w, w, b, t, t, t, t, t, t,
-      b, w, w, w, w, w, b, t, t, t, t, t,
-      b, w, w, w, w, w, w, b, t, t, t, t,
-      b, w, w, w, w, w, w, w, b, t, t, t,
-      b, w, w, w, w, w, w, w, w, b, t, t,
-      b, w, w, w, w, w, w, w, w, w, b, t,
-      b, w, w, w, w, w, w, b, b, b, b, b,
-      b, w, w, w, b, w, w, b, t, t, t, t,
-      b, w, w, b, b, w, w, b, t, t, t, t,
-      b, w, b, t, t, b, w, w, b, t, t, t,
-      b, b, t, t, t, b, w, w, b, t, t, t,
-      b, t, t, t, t, t, b, w, w, b, t, t,
-      t, t, t, t, t, t, b, w, w, b, t, t,
-      t, t, t, t, t, t, t, b, w, w, b, t,
-      t, t, t, t, t, t, t, b, w, w, b, t,
-      t, t, t, t, t, t, t, t, b, b, t, t
-    }));
-  }
-
-  @Nonnull
-  public static DesktopCursorDisplay getCrosshair() {
-    byte t = 0, b = -49, w = 32;
-    return new DesktopCursorDisplay(6, 6, Images.newImage(11, 11, new byte[]{
-      t, t, t, t, t, b, t, t, t, t, t,
-      t, t, t, t, t, b, t, t, t, t, t,
-      t, t, t, t, t, b, t, t, t, t, t,
-      t, t, t, t, t, b, t, t, t, t, t,
-      t, t, t, t, t, b, t, t, t, t, t,
-      b, b, b, b, b, b, b, b, b, b, b,
-      t, t, t, t, t, b, t, t, t, t, t,
-      t, t, t, t, t, b, t, t, t, t, t,
-      t, t, t, t, t, b, t, t, t, t, t,
-      t, t, t, t, t, b, t, t, t, t, t,
-      t, t, t, t, t, b, t, t, t, t, t,
-    }));
-  }
-
   public int getHotspotX() {
     return hotspotX;
   }
@@ -81,6 +35,8 @@ public class DesktopCursorDisplay {
   public void draw(@Nonnull Image target, @Nonnull Cursor cursor) {
     int x = cursor.getAbsoluteX() - hotspotX;
     int y = cursor.getAbsoluteY() - hotspotY;
+    int offsetX = 0;
+    int offsetY = 0;
     int width = image.getWidth();
     int height = image.getHeight();
 
@@ -89,6 +45,179 @@ public class DesktopCursorDisplay {
     if (y + image.getHeight() > target.getHeight())
       height -= y + image.getHeight() - target.getHeight();
 
-    target.drawImagePart(x, y, 0, 0, width, height, image);
+    if (x < 0) {
+      offsetX = -x;
+      x = 0;
+    }
+    if (y < 0) {
+      offsetY = -y;
+      y = 0;
+    }
+
+    target.drawImagePart(x, y, offsetX, offsetY, width - offsetX, height - offsetY, image);
+  }
+
+  public static final class DefaultCursors {
+
+    private static final byte t = 0, b = -49, w = 34;
+
+    @Nonnull
+    public static DesktopCursorDisplay getDefault() {
+      return new DesktopCursorDisplay(0, 0, Images.newImage(12, 21, new byte[]{
+        b, t, t, t, t, t, t, t, t, t, t, t,
+        b, b, t, t, t, t, t, t, t, t, t, t,
+        b, w, b, t, t, t, t, t, t, t, t, t,
+        b, w, w, b, t, t, t, t, t, t, t, t,
+        b, w, w, w, b, t, t, t, t, t, t, t,
+        b, w, w, w, w, b, t, t, t, t, t, t,
+        b, w, w, w, w, w, b, t, t, t, t, t,
+        b, w, w, w, w, w, w, b, t, t, t, t,
+        b, w, w, w, w, w, w, w, b, t, t, t,
+        b, w, w, w, w, w, w, w, w, b, t, t,
+        b, w, w, w, w, w, w, w, w, w, b, t,
+        b, w, w, w, w, w, w, b, b, b, b, b,
+        b, w, w, w, b, w, w, b, t, t, t, t,
+        b, w, w, b, b, w, w, b, t, t, t, t,
+        b, w, b, t, t, b, w, w, b, t, t, t,
+        b, b, t, t, t, b, w, w, b, t, t, t,
+        b, t, t, t, t, t, b, w, w, b, t, t,
+        t, t, t, t, t, t, b, w, w, b, t, t,
+        t, t, t, t, t, t, t, b, w, w, b, t,
+        t, t, t, t, t, t, t, b, w, w, b, t,
+        t, t, t, t, t, t, t, t, b, b, t, t,
+      }));
+    }
+
+    @Nonnull
+    public static DesktopCursorDisplay getCrosshair() {
+      return new DesktopCursorDisplay(6, 6, Images.newImage(11, 11, new byte[]{
+        t, t, t, t, b, b, b, t, t, t, t,
+        t, t, t, t, b, w, b, t, t, t, t,
+        t, t, t, t, b, w, b, t, t, t, t,
+        t, t, t, t, b, w, b, t, t, t, t,
+        b, b, b, b, b, w, b, b, b, b, b,
+        b, w, w, w, w, w, w, w, w, w, b,
+        b, b, b, b, b, w, b, b, b, b, b,
+        t, t, t, t, b, w, b, t, t, t, t,
+        t, t, t, t, b, w, b, t, t, t, t,
+        t, t, t, t, b, w, b, t, t, t, t,
+        t, t, t, t, b, b, b, t, t, t, t,
+      }));
+    }
+
+    @Nonnull
+    public static DesktopCursorDisplay getScaleVertical() {
+      return new DesktopCursorDisplay(11, 5, Images.newImage(21, 9, new byte[]{
+        t, t, t, t, b, b, t, t, t, t, t, t, t, t, t, b, b, t, t, t, t,
+        t, t, t, b, w, b, t, t, t, t, t, t, t, t, t, b, w, b, t, t, t,
+        t, t, b, w, w, b, t, t, t, t, t, t, t, t, t, b, w, w, b, t, t,
+        t, b, w, w, w, b, b, b, b, b, b, b, b, b, b, b, w, w, w, b, t,
+        b, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, b,
+        t, b, w, w, w, b, b, b, b, b, b, b, b, b, b, b, w, w, w, b, t,
+        t, t, b, w, w, b, t, t, t, t, t, t, t, t, t, b, w, w, b, t, t,
+        t, t, t, b, w, b, t, t, t, t, t, t, t, t, t, b, w, b, t, t, t,
+        t, t, t, t, b, b, t, t, t, t, t, t, t, t, t, b, b, t, t, t, t,
+      }));
+    }
+
+    @Nonnull
+    public static DesktopCursorDisplay getScaleHorizontal() {
+      return new DesktopCursorDisplay(5, 11, Images.newImage(9, 21, new byte[]{
+        t, t, t, t, b, t, t, t, t,
+        t, t, t, b, w, b, t, t, t,
+        t, t, b, w, w, w, b, t, t,
+        t, b, w, w, w, w, w, b, t,
+        b, w, w, w, w, w, w, w, b,
+        b, b, b, b, w, b, b, b, b,
+        t, t, t, b, w, b, t, t, t,
+        t, t, t, b, w, b, t, t, t,
+        t, t, t, b, w, b, t, t, t,
+        t, t, t, b, w, b, t, t, t,
+        t, t, t, b, w, b, t, t, t,
+        t, t, t, b, w, b, t, t, t,
+        t, t, t, b, w, b, t, t, t,
+        t, t, t, b, w, b, t, t, t,
+        t, t, t, b, w, b, t, t, t,
+        b, b, b, b, w, b, b, b, b,
+        b, w, w, w, w, w, w, w, b,
+        t, b, w, w, w, w, w, b, t,
+        t, t, b, w, w, w, b, t, t,
+        t, t, t, b, w, b, t, t, t,
+        t, t, t, t, b, t, t, t, t,
+      }));
+    }
+
+    @Nonnull
+    public static DesktopCursorDisplay getScaleDiagonalRight() {
+      return new DesktopCursorDisplay(8, 8, Images.newImage(15, 15, new byte[]{
+        t, b, b, b, b, b, t, t, t, t, t, t, t, t, t,
+        b, w, w, w, w, w, b, t, t, t, t, t, t, t, t,
+        b, w, w, w, w, b, t, t, t, t, t, t, t, t, t,
+        b, w, w, w, b, t, t, t, t, t, t, t, t, t, t,
+        b, w, w, b, w, b, t, t, t, t, t, t, t, t, t,
+        b, w, b, t, b, w, b, t, t, t, t, t, t, t, t,
+        t, b, t, t, t, b, w, b, t, t, t, t, t, t, t,
+        t, t, t, t, t, t, b, w, b, t, t, t, t, t, t,
+        t, t, t, t, t, t, t, b, w, b, t, t, t, b, t,
+        t, t, t, t, t, t, t, t, b, w, b, t, b, w, b,
+        t, t, t, t, t, t, t, t, t, b, w, b, w, w, b,
+        t, t, t, t, t, t, t, t, t, t, b, w, w, w, b,
+        t, t, t, t, t, t, t, t, t, b, w, w, w, w, b,
+        t, t, t, t, t, t, t, t, b, w, w, w, w, w, b,
+        t, t, t, t, t, t, t, t, t, b, b, b, b, b, t,
+      }));
+    }
+
+
+    @Nonnull
+    public static DesktopCursorDisplay getScaleDiagonalLeft() {
+      return new DesktopCursorDisplay(8, 8, Images.newImage(15, 15, new byte[]{
+        t, t, t, t, t, t, t, t, t, b, b, b, b, b, t,
+        t, t, t, t, t, t, t, t, b, w, w, w, w, w, b,
+        t, t, t, t, t, t, t, t, t, b, w, w, w, w, b,
+        t, t, t, t, t, t, t, t, t, t, b, w, w, w, b,
+        t, t, t, t, t, t, t, t, t, b, w, b, w, w, b,
+        t, t, t, t, t, t, t, t, b, w, b, t, b, w, b,
+        t, t, t, t, t, t, t, b, w, b, t, t, t, b, t,
+        t, t, t, t, t, t, b, w, b, t, t, t, t, t, t,
+        t, b, t, t, t, b, w, b, t, t, t, t, t, t, t,
+        b, w, b, t, b, w, b, t, t, t, t, t, t, t, t,
+        b, w, w, b, w, b, t, t, t, t, t, t, t, t, t,
+        b, w, w, w, b, t, t, t, t, t, t, t, t, t, t,
+        b, w, w, w, w, b, t, t, t, t, t, t, t, t, t,
+        b, w, w, w, w, w, b, t, t, t, t, t, t, t, t,
+        t, b, b, b, b, b, t, t, t, t, t, t, t, t, t,
+      }));
+    }
+
+    @Nonnull
+    public static DesktopCursorDisplay getMove() {
+      return new DesktopCursorDisplay(12, 12, Images.newImage(23, 23, new byte[]{
+        t, t, t, t, t, t, t, t, t, t, t, b, t, t, t, t, t, t, t, t, t, t, t,
+        t, t, t, t, t, t, t, t, t, t, b, w, b, t, t, t, t, t, t, t, t, t, t,
+        t, t, t, t, t, t, t, t, t, b, w, w, w, b, t, t, t, t, t, t, t, t, t,
+        t, t, t, t, t, t, t, t, b, w, w, w, w, w, b, t, t, t, t, t, t, t, t,
+        t, t, t, t, t, t, t, b, w, w, w, w, w, w, w, b, t, t, t, t, t, t, t,
+        t, t, t, t, t, t, t, b, b, b, b, w, b, b, b, b, t, t, t, t, t, t, t,
+        t, t, t, t, t, t, t, t, t, t, b, w, b, t, t, t, t, t, t, t, t, t, t,
+        t, t, t, t, b, b, t, t, t, t, b, w, b, t, t, t, t, b, b, t, t, t, t,
+        t, t, t, b, w, b, t, t, t, t, b, w, b, t, t, t, t, b, w, b, t, t, t,
+        t, t, b, w, w, b, t, t, t, t, b, w, b, t, t, t, t, b, w, w, b, t, t,
+        t, b, w, w, w, b, b, b, b, b, b, w, b, b, b, b, b, b, w, w, w, b, t,
+        b, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, b,
+        t, b, w, w, w, b, b, b, b, b, b, w, b, b, b, b, b, b, w, w, w, b, t,
+        t, t, b, w, w, b, t, t, t, t, b, w, b, t, t, t, t, b, w, w, b, t, t,
+        t, t, t, b, w, b, t, t, t, t, b, w, b, t, t, t, t, b, w, b, t, t, t,
+        t, t, t, t, b, b, t, t, t, t, b, w, b, t, t, t, t, b, b, t, t, t, t,
+        t, t, t, t, t, t, t, t, t, t, b, w, b, t, t, t, t, t, t, t, t, t, t,
+        t, t, t, t, t, t, t, b, b, b, b, w, b, b, b, b, t, t, t, t, t, t, t,
+        t, t, t, t, t, t, t, b, w, w, w, w, w, w, w, b, t, t, t, t, t, t, t,
+        t, t, t, t, t, t, t, t, b, w, w, w, w, w, b, t, t, t, t, t, t, t, t,
+        t, t, t, t, t, t, t, t, t, b, w, w, w, b, t, t, t, t, t, t, t, t, t,
+        t, t, t, t, t, t, t, t, t, t, b, w, b, t, t, t, t, t, t, t, t, t, t,
+        t, t, t, t, t, t, t, t, t, t, t, b, t, t, t, t, t, t, t, t, t, t, t,
+      }));
+    }
+
   }
 }
