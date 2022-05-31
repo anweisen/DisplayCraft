@@ -87,7 +87,7 @@ public class ImageImpl implements Image {
       int x = diffX < 0 ? -i : i;
       int y = (int) (i * fraction);
 
-      fillRect(Dimensions.from(startX + x, fraction < 0 ? startY + y - height : startY + y, size, height + size));
+      fillRect(startX + x, fraction < 0 ? startY + y - height : startY + y, size, height + size);
     }
   }
 
