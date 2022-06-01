@@ -1,6 +1,7 @@
 package net.anweisen.displaycraft.api.image;
 
 import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 /**
@@ -11,7 +12,7 @@ public class Dimensions {
 
   private final int x, y, width, height;
 
-  public Dimensions(int x, int y, int width, int height) {
+  public Dimensions(@Nonnegative int x, @Nonnegative int y, @Nonnegative int width, @Nonnegative int height) {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -54,15 +55,88 @@ public class Dimensions {
   }
 
   @Nonnull
-  public static Dimensions from(@Nonnull Image image) {
+  public static Dimensions fromFull(@Nonnull Image image) {
     return new Dimensions(0, 0, image.getWidth(), image.getHeight());
   }
 
-  public void verify(int maxWidth, int maxHeight) {
-    if (x < 0 || y < 0 || width <= 0 || height <= 0)
-      throw new IllegalArgumentException("Dimension position cannot be negative, size cannot be zero");
-    if (x + width > maxWidth || y + height > maxHeight)
-      throw new IllegalArgumentException(this + " out of bounds -> for (" + maxWidth + ", " + maxHeight + ")");
+  public boolean fits(int maxWidth, int maxHeight) {
+    return !(x < 0 || y < 0 || width <= 0 || height <= 0 || x + width > maxWidth || y + height > maxHeight);
+  }
+
+  public boolean contains(int x, int y) {
+    return x >= this.x && y >= this.y && x < this.x + width && y < this.y + height;
+  }
+
+  @Nonnull
+  @CheckReturnValue
+  public Dimensions withMargin(int top, int right, int bottom, int left) {
+    return new Dimensions(x + left, y + top, width - left - right, height - top - bottom);
+  }
+
+  @Nonnull
+  @CheckReturnValue
+  public Dimensions withMargin(int horizontal, int vertical) {
+    return withMargin(horizontal, vertical, horizontal, vertical);
+  }
+
+  @Nonnull
+  @CheckReturnValue
+  public Dimensions withMargin(int margin) {
+    return withMargin(margin, margin);
+  }
+
+  @Nonnull
+  @CheckReturnValue
+  public Dimensions withMoved(int x, int y) {
+    return new Dimensions(this.x + x, this.y + y, width, height);
+  }
+
+  @Nonnull
+  @CheckReturnValue
+  public Dimensions withX(int x) {
+    return new Dimensions(x, y, width, height);
+  }
+
+  @Nonnull
+  @CheckReturnValue
+  public Dimensions withY(int y) {
+    return new Dimensions(x, y, width, height);
+  }
+
+  @Nonnull
+  @CheckReturnValue
+  public Dimensions withWidth(int width) {
+    return new Dimensions(x, y, width, height);
+  }
+
+  @Nonnull
+  @CheckReturnValue
+  public Dimensions withHeight(int height) {
+    return new Dimensions(x, y, width, height);
+  }
+
+  @Nonnull
+  @CheckReturnValue
+  public Dimensions addX(int x) {
+    return withX(this.x + x);
+  }
+
+  @Nonnull
+  @CheckReturnValue
+  public Dimensions addY(int y) {
+    return withY(this.y + y);
+  }
+
+  @Nonnull
+  @CheckReturnValue
+  public Dimensions addWidth(int width) {
+    return withWidth(this.width + width);
+  }
+
+  @Nonnull
+  @CheckReturnValue
+  public Dimensions addHeight(int height) {
+    return withHeight(this.height + height);
   }
 
   @Nonnull
