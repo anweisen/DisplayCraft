@@ -11,6 +11,16 @@ public final class DrawHelper {
   private DrawHelper() {
   }
 
+  /**
+   * Fills the given image recursively like a fill bucket in paint from the given position.
+   * If the stack heap is too small a {@link StackOverflowError} will be thrown (can be changed with -Xss[size] parameter).
+   *
+   * @param image       the target image
+   * @param originColor the color to replace
+   * @param x           the current x position
+   * @param y           the current y position
+   * @throws StackOverflowError if the stack heap is too small, use -Xss[size] to increase it, eg. -Xss32m
+   */
   public static void fillBucket(@Nonnull Image image, byte originColor, int x, int y) {
     if (!image.contains(x, y)) return;
     if (image.getPixel(x, y) != originColor) return;
