@@ -46,7 +46,7 @@ public class Cursor {
 
   @Nonnull
   public static Cursor fromAbsolutes(int absoluteX, int absoluteY, int resolutionX, int resolutionY) {
-    return new Cursor((float) resolutionX / absoluteX, (float) resolutionY / absoluteY, absoluteX, absoluteY);
+    return new Cursor((float) absoluteX / resolutionX, (float) absoluteY / resolutionY, absoluteX, absoluteY);
   }
 
   @Nonnull
