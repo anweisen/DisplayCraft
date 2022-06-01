@@ -42,12 +42,12 @@ public class ImageImpl implements Image {
   }
 
   @Override
-  public byte getColor() {
+  public byte getCurrentColor() {
     return color;
   }
 
   @Override
-  public void setColor(byte color) {
+  public void setCurrentColor(byte color) {
     this.color = color;
   }
 

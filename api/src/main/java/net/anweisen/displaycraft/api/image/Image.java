@@ -19,9 +19,9 @@ public interface Image {
   @Nonnegative
   int getHeight();
 
-  byte getColor();
+  byte getCurrentColor();
 
-  void setColor(byte color);
+  void setCurrentColor(byte color);
 
   void drawPixel(int x, int y);
 
