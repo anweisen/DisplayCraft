@@ -106,7 +106,7 @@ public class DesktopCursorDisplay {
     }
 
     @Nonnull
-    public static DesktopCursorDisplay getScaleVertical() {
+    public static DesktopCursorDisplay getScaleHorizontal() {
       return new DesktopCursorDisplay(11, 5, Images.newImage(21, 9, new byte[]{
         t, t, t, t, b, b, t, t, t, t, t, t, t, t, t, b, b, t, t, t, t,
         t, t, t, b, w, b, t, t, t, t, t, t, t, t, t, b, w, b, t, t, t,
@@ -121,7 +121,7 @@ public class DesktopCursorDisplay {
     }
 
     @Nonnull
-    public static DesktopCursorDisplay getScaleHorizontal() {
+    public static DesktopCursorDisplay getScaleVertical() {
       return new DesktopCursorDisplay(5, 11, Images.newImage(9, 21, new byte[]{
         t, t, t, t, b, t, t, t, t,
         t, t, t, b, w, b, t, t, t,
