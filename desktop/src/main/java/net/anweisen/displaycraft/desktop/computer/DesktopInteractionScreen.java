@@ -5,6 +5,7 @@ import net.anweisen.displaycraft.api.Cursor;
 import net.anweisen.displaycraft.api.Direction;
 import net.anweisen.displaycraft.api.Position;
 import net.anweisen.displaycraft.api.ScreenTracer;
+import net.anweisen.displaycraft.api.image.Dimensions;
 import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.api.image.Images;
 import net.anweisen.displaycraft.nms.Reflect;
@@ -144,6 +145,11 @@ public class DesktopInteractionScreen {
   @Nonnull
   public Image newImage() {
     return Images.newImage(width, height);
+  }
+
+  @Nonnull
+  public Dimensions getFullDimensions() {
+    return Dimensions.from(0, 0, width, height);
   }
 
   public int getResolution() {
