@@ -1,9 +1,9 @@
 package net.anweisen.displaycraft.desktop.computer;
 
 import net.anweisen.displaycraft.api.Cursor;
-import net.anweisen.displaycraft.desktop.computer.component.DesktopComponentHandler;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorClickListener;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorMoveListener;
+import net.anweisen.displaycraft.desktop.computer.overlay.DesktopOverlayHandler;
 import net.anweisen.displaycraft.desktop.computer.render.DesktopRenderHandler;
 import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
@@ -23,7 +23,8 @@ public class DesktopComputer {
   private final DesktopInteractionCursor cursor;
   private final DesktopPlayerBridge playerBridge;
   private final DesktopRenderHandler renderHandler;
-  private final DesktopComponentHandler componentHandler;
+  private final DesktopOverlayHandler overlayHandler;
+
   private final Collection<DesktopCursorClickListener> clickListeners = new CopyOnWriteArrayList<>();
   private final Collection<DesktopCursorMoveListener> moveListeners = new CopyOnWriteArrayList<>();
 
@@ -33,7 +34,9 @@ public class DesktopComputer {
 
     this.playerBridge = new DesktopPlayerBridge(this);
     this.renderHandler = new DesktopRenderHandler(this);
-    this.componentHandler = new DesktopComponentHandler(this);
+    this.overlayHandler = new DesktopOverlayHandler(this);
+
+    this.overlayHandler.registerHandlers();
 
     instances.add(this);
   }
@@ -47,10 +50,9 @@ public class DesktopComputer {
     cursor.startUpdatesTask(this);
   }
 
-  // TODO this is actually internal
-  public boolean handleCursorClick(@Nonnull Player player, boolean right) {
+  public void handleCursorClick(@Nonnull Player player, boolean right) {
     Cursor cursor = this.cursor.getCursorPosition(player);
-    if (cursor == null) return false;
+    if (cursor == null) return;
     for (DesktopCursorClickListener listener : clickListeners) {
       try {
         listener.handleClick(this, player, cursor, right);
@@ -58,7 +60,6 @@ public class DesktopComputer {
         ex.printStackTrace();
       }
     }
-    return true;
   }
 
   public void handleCursorMove(@Nonnull Player player, @Nonnull Cursor from, @Nonnull Cursor to) {
@@ -119,7 +120,7 @@ public class DesktopComputer {
   }
 
   @Nonnull
-  public DesktopComponentHandler getComponentHandler() {
-    return componentHandler;
+  public DesktopOverlayHandler getOverlayHandler() {
+    return overlayHandler;
   }
 }

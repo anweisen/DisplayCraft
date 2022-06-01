@@ -2,6 +2,7 @@ package net.anweisen.displaycraft.desktop.listener;
 
 import net.anweisen.displaycraft.DisplayCraft;
 import net.anweisen.displaycraft.desktop.computer.DesktopComputer;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -23,11 +24,17 @@ public class PlayerInteractionListener implements Listener {
       default -> false;
     };
 
-    DisplayCraft.getInstance().getExecutorService().execute(() -> {
-      for (DesktopComputer computer : DesktopComputer.getInstances()) {
-        computer.handleCursorClick(event.getPlayer(), right);
+    for (DesktopComputer computer : DesktopComputer.getInstances()) {
+      if (computer.getCursor().hasCursor(event.getPlayer())) {
+        event.setCancelled(true);
+        event.setUseInteractedBlock(Event.Result.DENY);
+        event.setUseItemInHand(Event.Result.DENY);
       }
-    });
+
+      DisplayCraft.getInstance().getExecutorService().execute(() -> {
+        computer.handleCursorClick(event.getPlayer(), right);
+      });
+    }
   }
 
 }
