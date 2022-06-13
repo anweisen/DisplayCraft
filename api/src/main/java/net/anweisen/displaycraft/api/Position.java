@@ -63,6 +63,11 @@ public class Position {
     return new Location(world, x, y, z).setDirection(direction.getVector());
   }
 
+  @Nonnull
+  public Location toInvertedLocation(@Nonnull World world) {
+    return new Location(world, x, y, z).setDirection(direction.getOpposite().getVector());
+  }
+
   @Override
   public String toString() {
     return "Position[" + x + ", " + y + ", " + z + ", " + direction + ']';
