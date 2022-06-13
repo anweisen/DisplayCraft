@@ -13,7 +13,23 @@ public enum Direction {
   SOUTH(0, 0, 1),
   EAST(1, 0, 0),
   WEST(-1, 0, 0),
+
+  /**
+   * Not supported/implemented yet
+   * Also, only available in higher versions (starting from 1.13+)
+   *
+   * @see #DOWN
+   */
+  @Deprecated
   UP(0, 1, 0),
+
+  /**
+   * Not supported/implemented yet
+   * Also, only available in higher versions (starting from 1.13+)
+   *
+   * @see #UP
+   */
+  @Deprecated
   DOWN(0, -1, 0),
   ;
 
