@@ -1,6 +1,7 @@
 package net.anweisen.displaycraft.desktop.computer.cursor;
 
 import net.anweisen.displaycraft.api.Cursor;
+import net.anweisen.displaycraft.api.image.DrawHelper;
 import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.api.image.Images;
 import javax.annotation.Nonnull;
@@ -33,28 +34,7 @@ public class DesktopCursorDisplay {
   }
 
   public void draw(@Nonnull Image target, @Nonnull Cursor cursor) {
-    int x = cursor.getAbsoluteX() - hotspotX;
-    int y = cursor.getAbsoluteY() - hotspotY;
-    int offsetX = 0;
-    int offsetY = 0;
-    int width = image.getWidth();
-    int height = image.getHeight();
-
-    if (x + image.getWidth() > target.getWidth())
-      width -= x + image.getWidth() - target.getWidth();
-    if (y + image.getHeight() > target.getHeight())
-      height -= y + image.getHeight() - target.getHeight();
-
-    if (x < 0) {
-      offsetX = -x;
-      x = 0;
-    }
-    if (y < 0) {
-      offsetY = -y;
-      y = 0;
-    }
-
-    target.drawImagePart(x, y, offsetX, offsetY, width - offsetX, height - offsetY, image);
+    DrawHelper.drawImageEdge(image, cursor.getAbsoluteX(), cursor.getAbsoluteY(), hotspotX, hotspotY, target);
   }
 
   public static final class DefaultCursors {
