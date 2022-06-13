@@ -1,5 +1,6 @@
 package net.anweisen.displaycraft.api.implementation.image;
 
+import net.anweisen.displaycraft.api.image.ColorPalette;
 import net.anweisen.displaycraft.api.image.Dimensions;
 import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.api.image.Images;
@@ -93,11 +94,11 @@ public class ImageImpl implements Image {
 
   @Override
   public void drawImage(int x, int y, @Nonnull Image image) {
-    drawImagePart(x, y, 0, 0, image.getWidth(), image.getHeight(), image);
+    drawImagePart(x, y, Dimensions.fromFull(image), image);
   }
 
   @Override
-  public void drawImagePart(int destinationX, int destinationY, int sourceX, int sourceY, int width, int height, @Nonnull Image image) {
+  public void drawImagePart(int destinationX, int destinationY, int sourceX, int sourceY, int width, int height, @Nonnull Image image, boolean overwriteAsTransparent) {
     Images.checkBounds(sourceX, width, image.getWidth());
     Images.checkBounds(sourceY, height, image.getHeight());
     Images.checkBounds(destinationX, width, this.width);
@@ -106,7 +107,7 @@ public class ImageImpl implements Image {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         byte pixel = image.getPixel(sourceX + j, sourceY + i);
-        if (pixel == 0) continue; // 0 = transparent // TODO
+        if (!overwriteAsTransparent && pixel == ColorPalette.TRANSPARENT) continue;
         content[(i + destinationY) * this.width + destinationX + j] = pixel;
       }
     }
@@ -114,7 +115,7 @@ public class ImageImpl implements Image {
 
   @Override
   public void drawImagePart(int destinationX, int destinationY, @Nonnull Dimensions dimensions, @Nonnull Image image) {
-    drawImagePart(destinationX, destinationY, dimensions.getX(), dimensions.getY(), dimensions.getWidth(), dimensions.getHeight(), image);
+    drawImagePart(destinationX, destinationY, dimensions.getX(), dimensions.getY(), dimensions.getWidth(), dimensions.getHeight(), image, false);
   }
 
   @Nonnull
