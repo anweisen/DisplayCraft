@@ -59,7 +59,7 @@ public class Dimensions {
     return new Dimensions(0, 0, image.getWidth(), image.getHeight());
   }
 
-  public boolean fits(int maxWidth, int maxHeight) {
+  public boolean fitsInto(int maxWidth, int maxHeight) {
     return !(x < 0 || y < 0 || width <= 0 || height <= 0 || x + width > maxWidth || y + height > maxHeight);
   }
 

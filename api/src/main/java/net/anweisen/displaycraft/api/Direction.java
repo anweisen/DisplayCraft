@@ -67,7 +67,7 @@ public enum Direction {
     return new Vector(modX, modY, modZ);
   }
 
-  public <T> T getAxis(T x, T y, T z) {
+  public <T> T getOnAxis(T x, T y, T z) {
     return switch (this) {
       case NORTH, SOUTH -> z;
       case WEST, EAST -> x;

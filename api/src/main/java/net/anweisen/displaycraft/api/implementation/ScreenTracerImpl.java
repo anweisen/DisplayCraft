@@ -33,7 +33,7 @@ public class ScreenTracerImpl implements ScreenTracer {
       Location next = position.clone().add(fractionVector);
 
       // distance between (next) cursor position and screen surface
-      double distance = Math.abs(screenCoordinate - axis.getAxis(next.getX(), next.getY(), next.getZ()));
+      double distance = Math.abs(screenCoordinate - axis.getOnAxis(next.getX(), next.getY(), next.getZ()));
       if (distance > lastDistance) {
 
         // find relative cursor position

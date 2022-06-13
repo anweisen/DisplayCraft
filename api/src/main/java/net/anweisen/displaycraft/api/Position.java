@@ -54,8 +54,8 @@ public class Position {
     return direction;
   }
 
-  public int getAxis() {
-    return direction.getAxis(x, y, z);
+  public int getOnAxis() {
+    return direction.getOnAxis(x, y, z);
   }
 
   @Nonnull
