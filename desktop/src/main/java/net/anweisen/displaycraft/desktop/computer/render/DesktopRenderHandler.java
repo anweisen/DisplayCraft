@@ -54,7 +54,7 @@ public class DesktopRenderHandler {
   }
 
   public void distributeEntirely(@Nonnull Collection<? extends Player> viewers, @Nonnull Image image) {
-    computer.getScreen().render(viewers, image, (tile, x, y) -> true);
+    computer.getScreen().render(viewers, image, (fullImage, clip, x, y) -> true);
   }
 
   public void distributeEfficent(@Nonnull Collection<? extends Player> viewers, @Nonnull Image image) {

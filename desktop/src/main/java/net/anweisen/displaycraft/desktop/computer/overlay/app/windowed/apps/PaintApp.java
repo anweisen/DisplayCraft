@@ -45,7 +45,7 @@ public class PaintApp implements AppWindowHandler, Listener {
 
     // rescaled window -> rescale image
     if (image.getWidth() != cache.getWidth() || image.getHeight() != cache.getHeight()) {
-      image.drawImagePart(0, 0, 0, 0, Math.min(image.getWidth(), cache.getWidth()), Math.min(image.getHeight(), cache.getHeight()), cache);
+      image.drawImagePart(0, 0, 0, 0, Math.min(image.getWidth(), cache.getWidth()), Math.min(image.getHeight(), cache.getHeight()), cache, false);
       cache = image;
       return;
     }

@@ -1,6 +1,7 @@
 package net.anweisen.displaycraft.desktop.computer;
 
 import net.anweisen.displaycraft.api.Cursor;
+import net.anweisen.displaycraft.api.multipart.MultipartScreen;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorClickListener;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorMoveListener;
 import net.anweisen.displaycraft.desktop.computer.overlay.DesktopOverlayHandler;
@@ -19,7 +20,7 @@ public class DesktopComputer {
 
   private static final Collection<DesktopComputer> instances = new CopyOnWriteArrayList<>();
 
-  private final DesktopInteractionScreen screen;
+  private final MultipartScreen screen;
   private final DesktopInteractionCursor cursor;
   private final DesktopPlayerBridge playerBridge;
   private final DesktopRenderHandler renderHandler;
@@ -28,7 +29,7 @@ public class DesktopComputer {
   private final Collection<DesktopCursorClickListener> clickListeners = new CopyOnWriteArrayList<>();
   private final Collection<DesktopCursorMoveListener> moveListeners = new CopyOnWriteArrayList<>();
 
-  public DesktopComputer(@Nonnull DesktopInteractionScreen screen, @Nonnull DesktopInteractionCursor cursor) {
+  public DesktopComputer(@Nonnull MultipartScreen screen, @Nonnull DesktopInteractionCursor cursor) {
     this.screen = screen;
     this.cursor = cursor;
 
@@ -100,7 +101,7 @@ public class DesktopComputer {
   }
 
   @Nonnull
-  public DesktopInteractionScreen getScreen() {
+  public MultipartScreen getScreen() {
     return screen;
   }
 

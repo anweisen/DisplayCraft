@@ -78,7 +78,7 @@ public class DesktopAppWindowed implements DesktopApp {
   public void handleMove(@Nonnull Player player, @Nonnull Cursor from, @Nonnull Cursor to) {
     if (moving.contains(player)) {
       Dimensions moved = dimensions.withMoved(to.getAbsoluteX() - from.getAbsoluteX(), to.getAbsoluteY() - from.getAbsoluteY());
-      if (!moved.fits(computer.getScreen().getWidth(), computer.getScreen().getHeight()))
+      if (!moved.fitsInto(computer.getScreen().getWidth(), computer.getScreen().getHeight()))
         return;
 
       dimensions = moved;
@@ -92,7 +92,7 @@ public class DesktopAppWindowed implements DesktopApp {
       if (scaleMode.getModY() < 0)
         scaled = scaled.addY(-scaleMode.getModY() * (to.getAbsoluteY() - from.getAbsoluteY()));
 
-      if (!scaled.fits(computer.getScreen().getWidth(), computer.getScreen().getHeight()))
+      if (!scaled.fitsInto(computer.getScreen().getWidth(), computer.getScreen().getHeight()))
         return;
 
       dimensions = scaled;

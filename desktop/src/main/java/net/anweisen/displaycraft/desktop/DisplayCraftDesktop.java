@@ -9,9 +9,8 @@ import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.api.image.Images;
 import net.anweisen.displaycraft.desktop.computer.DesktopComputer;
 import net.anweisen.displaycraft.desktop.computer.DesktopInteractionCursor;
-import net.anweisen.displaycraft.desktop.computer.DesktopInteractionScreen;
+import net.anweisen.displaycraft.api.multipart.MultipartScreen;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorClickListener;
-import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorDisplay.DefaultCursors;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorMoveListener;
 import net.anweisen.displaycraft.desktop.computer.render.DesktopRenderer;
 import net.anweisen.displaycraft.desktop.listener.PlayerInteractionListener;
@@ -40,7 +39,7 @@ public class DisplayCraftDesktop extends JavaPlugin {
     getServer().getPluginManager().registerEvents(new PlayerInteractionListener(), this);
 
     computer = new DesktopComputer(
-      DesktopInteractionScreen.withCenter(Images.RESOLUTION, 7, 3, Position.from(1, 65, 0, Direction.WEST)),
+      MultipartScreen.withCenter(Images.RESOLUTION, 7, 3, Position.from(1, 65, 0, Direction.WEST)),
       new DesktopInteractionCursor(10, 1000 / 40)
     );
     computer.startTasks();

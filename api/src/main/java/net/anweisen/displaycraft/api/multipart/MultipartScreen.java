@@ -1,4 +1,4 @@
-package net.anweisen.displaycraft.desktop.computer;
+package net.anweisen.displaycraft.api.multipart;
 
 import net.anweisen.displaycraft.DisplayCraft;
 import net.anweisen.displaycraft.api.Cursor;
@@ -19,23 +19,28 @@ import java.util.Collection;
  * @author anweisen | https://github.com/anweisen
  * @since 1.0
  */
-public class DesktopInteractionScreen {
+public class MultipartScreen {
 
-  private final int resolution;
-  private final int sizeX, sizeY;
-  private final int width, height;
+  // the resolution per direction (width/height) per tile
+  protected final int resolution;
+
+  // the size of the screen in blocks/maps
+  protected final int sizeX, sizeY;
+
+  // the image width/height in pixels
+  protected final int width, height;
 
   /**
    * The map positions of the screen as a two-dimensional array matrix.
    * The first dimension of the matrix corresponds to the height (position[y]) and holds
    * the second dimension which represents the width (position[y][x]).
-   * Each Tuple holds the map position as first value and the mapId as the second value.
+   * Each Tuple holds the map position(Position) as first value and the mapId(int) as the second value.
    */
-  private final Tuple<Position, Integer>[][] position;
-  private final Direction axis;
-  private final int coordinate;
+  protected final Tuple<Position, Integer>[][] position;
+  protected final Direction axis;
+  protected final int coordinate;
 
-  public DesktopInteractionScreen(int resolution, int sizeX, int sizeY, @Nonnull Tuple<Position, Integer>[][] position) {
+  public MultipartScreen(int resolution, int sizeX, int sizeY, @Nonnull Tuple<Position, Integer>[][] position) {
     // check dimensions
     if (sizeX <= 0 || sizeY <= 0 || resolution <= 0)
       throw new IllegalArgumentException("Resolution or size cannot be zero or negative");
@@ -54,9 +59,9 @@ public class DesktopInteractionScreen {
           throw new IllegalArgumentException("Not all screen positions are on the same axis! expected: " + axis + " got: " + current.getFirst());
         axis = current.getFirst().getDirection();
 
-        if (coordinate != null && coordinate != current.getFirst().getAxis())
+        if (coordinate != null && coordinate != current.getFirst().getOnAxis())
           throw new IllegalArgumentException("Not all screen positions are on the same axis coordinate! expected: " + coordinate + " got: " + current.getFirst());
-        coordinate = current.getFirst().getAxis();
+        coordinate = current.getFirst().getOnAxis();
       }
     }
     this.axis = axis;
@@ -71,8 +76,13 @@ public class DesktopInteractionScreen {
   }
 
   @Nonnull
+  public static MultipartScreen withCenter(int resolution, int sizeX, int sizeY, @Nonnull Position center) {
+    return new MultipartScreen(resolution, sizeX, sizeY, getPositionsFromCenter(sizeX, sizeY, center));
+  }
+
+  @Nonnull
   @SuppressWarnings("unchecked") // generic array creation
-  public static DesktopInteractionScreen withCenter(int resolution, int sizeX, int sizeY, @Nonnull Position center) {
+  public static Tuple<Position, Integer>[][] getPositionsFromCenter(int sizeX, int sizeY, @Nonnull Position center) {
     Direction direction = center.getDirection();
     Tuple<Position, Integer>[][] position = new Tuple[sizeY][sizeX];
     for (int y = 0; y < sizeY; y++) {
@@ -87,7 +97,7 @@ public class DesktopInteractionScreen {
       }
     }
 
-    return new DesktopInteractionScreen(resolution, sizeX, sizeY, position);
+    return position;
   }
 
   @Nullable
@@ -115,7 +125,7 @@ public class DesktopInteractionScreen {
         int mapId = position[y][x].getSecond();
         Image clip = image.clipImage(x * resolution, y * resolution, resolution, resolution);
 
-        if (filter.shouldRender(clip, x, y)) {
+        if (filter.shouldRender(image, clip, x, y)) {
           for (Player player : viewers) {
             DisplayCraft.getInstance().getDisplayProvider().render(player, mapId, clip);
           }
@@ -134,9 +144,9 @@ public class DesktopInteractionScreen {
     return ids;
   }
 
-  public void destroy(@Nonnull Player player, int[][] ids) {
-    for (var array : ids) {
-      for (var id : array) {
+  public void destroy(@Nonnull Player player, int[][] entityIds) {
+    for (int[] array : entityIds) {
+      for (int id : array) {
         DisplayCraft.getInstance().getDisplayProvider().destroy(player, id);
       }
     }
@@ -189,6 +199,16 @@ public class DesktopInteractionScreen {
 
   @FunctionalInterface
   public interface RenderFilter {
-    boolean shouldRender(@Nonnull Image image, int x, int y);
+
+    /**
+     * @param fullImage the full image on the whole screen
+     * @param clip      the content of the current part
+     * @param x         the x position of the tile inside the screen
+     * @param y         the y position of the tile inside the screen
+     * @return whether the current clip/tile should be rendered
+     * @see MultipartScreen#render(Collection, Image, RenderFilter)
+     */
+    boolean shouldRender(@Nonnull Image fullImage, @Nonnull Image clip, int x, int y);
+
   }
 }

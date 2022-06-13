@@ -26,6 +26,7 @@ public interface ScreenTracer {
   TraceResult trace(@Nonnull Direction axis, int coordinate, @Nonnull Location origin, int maxDistance, int resolution);
 
   final class TraceResult {
+
     private final Position screen;
 
     private final Cursor cursor;

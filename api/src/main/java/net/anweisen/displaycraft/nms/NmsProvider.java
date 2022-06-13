@@ -6,6 +6,8 @@ import javax.annotation.Nonnull;
 
 /**
  * @author anweisen | https://github.com/anweisen
+ * @see Reflect#newNmsProvider()
+ * @see net.anweisen.displaycraft.api.DisplayProvider
  * @since 1.0
  */
 public interface NmsProvider {
