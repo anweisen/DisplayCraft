@@ -25,7 +25,7 @@ public class DesktopOverlayHandler {
   private final DesktopComputer computer;
 
   private final AtomicReference<DesktopHomeComponent> home = new AtomicReference<>(new DesktopHomeComponent.Default());
-  private final ArrayList<Integer> appRenderIndex = new ArrayList<>();
+  private final ArrayList<Integer> appRenderIndexOrder = new ArrayList<>();
   private final Map<Integer, DesktopApp> appsByIndex = new HashMap<>();
   private final AtomicInteger appIdTracker = new AtomicInteger();
 
@@ -40,25 +40,24 @@ public class DesktopOverlayHandler {
       home.get().render(output);
 
       // reversed loop, render lowest first
-      for (int i = appRenderIndex.size() - 1; i >= 0; i--) {
-        int index = appRenderIndex.get(i);
+      for (int i = appRenderIndexOrder.size() - 1; i >= 0; i--) {
+        int index = appRenderIndexOrder.get(i);
         DesktopApp app = appsByIndex.get(index);
         app.render(output);
       }
 
-      cursors:
       for (var entry : computer.getCursor().getPlayerCursorPositions()) {
         Cursor cursor = entry.getValue();
         Player player = entry.getKey();
 
-        for (int index : appRenderIndex) {
+        for (int index : appRenderIndexOrder) {
           DesktopApp app = appsByIndex.get(index);
           Dimensions dimensions = app.getInteractionDimensions(player);
 
           if (dimensions.contains(cursor.getAbsoluteX(), cursor.getAbsoluteY())) {
             DesktopCursorDisplay display = app.getCursorDisplay(player, cursor);
             display.draw(output, cursor);
-            continue cursors;
+            break;
           }
         }
 
@@ -68,16 +67,16 @@ public class DesktopOverlayHandler {
       }
     });
     computer.registerCursorClickListener((__, player, cursor, right) -> {
-      for (int i = 0; i < appRenderIndex.size(); i++) {
-        int index = appRenderIndex.get(i);
+      for (int i = 0; i < appRenderIndexOrder.size(); i++) {
+        int index = appRenderIndexOrder.get(i);
         DesktopApp app = appsByIndex.get(index);
         Dimensions dimensions = app.getInteractionDimensions(player);
 
         if (dimensions.contains(cursor.getAbsoluteX(), cursor.getAbsoluteY())) {
           // app clicked -> move to top of stack
-          if (i != 0 && appRenderIndex.size() > 1) { // if it's not already on top & it's not the only app
-            appRenderIndex.remove(i);
-            appRenderIndex.add(0, index);
+          if (i != 0 && appRenderIndexOrder.size() > 1) { // if it's not already on top & it's not the only app
+            appRenderIndexOrder.remove(i);
+            appRenderIndexOrder.add(0, index);
           }
 
           app.handleClick(player, cursor, right);
@@ -86,7 +85,7 @@ public class DesktopOverlayHandler {
       }
     });
     computer.registerCursorMoveListener((__, player, from, to) -> {
-      for (int index : appRenderIndex) {
+      for (int index : appRenderIndexOrder) {
         DesktopApp app = appsByIndex.get(index);
         Dimensions dimensions = app.getInteractionDimensions(player);
 
@@ -105,7 +104,7 @@ public class DesktopOverlayHandler {
     app.init(computer, index);
 
     appsByIndex.put(index, app);
-    appRenderIndex.add(0, index);
+    appRenderIndexOrder.add(0, index);
   }
 
   @Nonnull
