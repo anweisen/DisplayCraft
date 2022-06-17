@@ -5,7 +5,7 @@ import net.anweisen.displaycraft.api.multipart.MultipartScreen;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorClickListener;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorMoveListener;
 import net.anweisen.displaycraft.desktop.computer.overlay.DesktopOverlayHandler;
-import net.anweisen.displaycraft.desktop.computer.render.DesktopRenderHandler;
+import net.anweisen.displaycraft.api.multipart.render.ScreenRenderHandler;
 import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -23,7 +23,7 @@ public class DesktopComputer {
   private final MultipartScreen screen;
   private final DesktopInteractionCursor cursor;
   private final DesktopPlayerBridge playerBridge;
-  private final DesktopRenderHandler renderHandler;
+  private final ScreenRenderHandler renderHandler;
   private final DesktopOverlayHandler overlayHandler;
 
   private final Collection<DesktopCursorClickListener> clickListeners = new CopyOnWriteArrayList<>();
@@ -33,8 +33,8 @@ public class DesktopComputer {
     this.screen = screen;
     this.cursor = cursor;
 
+    this.renderHandler = new ScreenRenderHandler(screen);
     this.playerBridge = new DesktopPlayerBridge(this);
-    this.renderHandler = new DesktopRenderHandler(this);
     this.overlayHandler = new DesktopOverlayHandler(this);
 
     this.overlayHandler.registerHandlers();
@@ -56,7 +56,7 @@ public class DesktopComputer {
     if (cursor == null) return;
     for (DesktopCursorClickListener listener : clickListeners) {
       try {
-        listener.handleClick(this, player, cursor, right);
+        listener.handleClick(player, cursor, right);
       } catch (Exception ex) {
         ex.printStackTrace();
       }
@@ -66,7 +66,7 @@ public class DesktopComputer {
   public void handleCursorMove(@Nonnull Player player, @Nonnull Cursor from, @Nonnull Cursor to) {
     for (DesktopCursorMoveListener listener : moveListeners) {
       try {
-        listener.handleMove(this, player, from, to);
+        listener.handleMove(player, from, to);
       } catch (Exception ex) {
         ex.printStackTrace();
       }
@@ -116,7 +116,7 @@ public class DesktopComputer {
   }
 
   @Nonnull
-  public DesktopRenderHandler getRenderHandler() {
+  public ScreenRenderHandler getRenderHandler() {
     return renderHandler;
   }
 

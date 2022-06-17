@@ -11,6 +11,6 @@ import javax.annotation.Nonnull;
  */
 public interface DesktopCursorClickListener {
 
-  void handleClick(@Nonnull DesktopComputer computer, @Nonnull Player player, @Nonnull Cursor cursor, boolean right);
+  void handleClick(@Nonnull Player player, @Nonnull Cursor cursor, boolean right);
 
 }

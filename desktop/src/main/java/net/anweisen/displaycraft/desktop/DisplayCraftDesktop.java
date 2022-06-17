@@ -12,7 +12,7 @@ import net.anweisen.displaycraft.desktop.computer.DesktopInteractionCursor;
 import net.anweisen.displaycraft.api.multipart.MultipartScreen;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorClickListener;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorMoveListener;
-import net.anweisen.displaycraft.desktop.computer.render.DesktopRenderer;
+import net.anweisen.displaycraft.api.multipart.render.ScreenRenderer;
 import net.anweisen.displaycraft.desktop.listener.PlayerInteractionListener;
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapPalette;
@@ -73,7 +73,7 @@ public class DisplayCraftDesktop extends JavaPlugin {
     computer.destroy();
   }
 
-  public class Drawing implements DesktopRenderer, DesktopCursorClickListener, DesktopCursorMoveListener {
+  public class Drawing implements ScreenRenderer, DesktopCursorClickListener, DesktopCursorMoveListener {
 
     private final Collection<Player> drawing = new ArrayList<>();
     private Image image;

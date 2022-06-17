@@ -1,7 +1,9 @@
-package net.anweisen.displaycraft.desktop.computer.render;
+package net.anweisen.displaycraft.api.multipart.render;
 
 import net.anweisen.displaycraft.api.image.Image;
-import net.anweisen.displaycraft.desktop.computer.DesktopComputer;
+import net.anweisen.displaycraft.api.multipart.MultipartScreen;
+import net.anweisen.displaycraft.api.multipart.RenderFilter;
+import net.anweisen.displaycraft.api.multipart.RenderFilterStore;
 import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -12,25 +14,25 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author anweisen | https://github.com/anweisen
  * @since 1.0
  */
-public class DesktopRenderHandler {
+public class ScreenRenderHandler {
 
-  private final List<DesktopRenderer> renderer = new CopyOnWriteArrayList<>();
-  private final DesktopTileStore store = new DesktopTileStore();
-  private final DesktopComputer computer;
+  private final List<ScreenRenderer> renderer = new CopyOnWriteArrayList<>();
+  private final RenderFilterStore store = new RenderFilterStore();
+  private final MultipartScreen screen;
 
-  public DesktopRenderHandler(@Nonnull DesktopComputer computer) {
-    this.computer = computer;
+  public ScreenRenderHandler(@Nonnull MultipartScreen screen) {
+    this.screen = screen;
   }
 
-  public void registerRendererAfter(@Nonnull DesktopRenderer renderer) {
+  public void registerRendererAfter(@Nonnull ScreenRenderer renderer) {
     this.renderer.add(renderer);
   }
 
-  public void registerRendererBefore(@Nonnull DesktopRenderer renderer) {
+  public void registerRendererBefore(@Nonnull ScreenRenderer renderer) {
     this.renderer.add(0, renderer);
   }
 
-  public void removeRenderer(@Nonnull DesktopRenderer renderer) {
+  public void removeRenderer(@Nonnull ScreenRenderer renderer) {
     this.renderer.remove(renderer);
   }
 
@@ -40,11 +42,11 @@ public class DesktopRenderHandler {
 
   @Nonnull
   public Image renderImage() {
-    Image image = computer.getScreen().newImage();
+    Image image = screen.newImage();
 
-    for (DesktopRenderer renderer : renderer) {
+    for (ScreenRenderer renderer : renderer) {
       try {
-        renderer.render(computer, image);
+        renderer.render(image);
       } catch (Exception ex) {
         ex.printStackTrace();
       }
@@ -54,11 +56,11 @@ public class DesktopRenderHandler {
   }
 
   public void distributeEntirely(@Nonnull Collection<? extends Player> viewers, @Nonnull Image image) {
-    computer.getScreen().render(viewers, image, (fullImage, clip, x, y) -> true);
+    screen.render(viewers, image, RenderFilter.ALL);
   }
 
   public void distributeEfficent(@Nonnull Collection<? extends Player> viewers, @Nonnull Image image) {
-    store.distribute(computer.getScreen(), viewers, image);
+    screen.render(viewers, image, store);
   }
 
   public void render(@Nonnull Collection<? extends Player> viewers) {
@@ -73,13 +75,12 @@ public class DesktopRenderHandler {
   }
 
   @Nonnull
-  public DesktopTileStore getStore() {
+  public RenderFilterStore getStore() {
     return store;
   }
 
   @Nonnull
-  public DesktopComputer getComputer() {
-    return computer;
+  public MultipartScreen getScreen() {
+    return screen;
   }
-
 }

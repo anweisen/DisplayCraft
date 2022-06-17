@@ -1,4 +1,4 @@
-package net.anweisen.displaycraft.desktop.computer.render;
+package net.anweisen.displaycraft.api.multipart.render;
 
 import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.desktop.computer.DesktopComputer;
@@ -8,8 +8,8 @@ import javax.annotation.Nonnull;
  * @author anweisen | https://github.com/anweisen
  * @since 1.0
  */
-public interface DesktopRenderer {
+public interface ScreenRenderer {
 
-  void render(@Nonnull DesktopComputer computer, @Nonnull Image image);
+  void render(@Nonnull Image image);
 
 }

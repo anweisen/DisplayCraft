@@ -27,16 +27,16 @@ public class DesktopOverlayHandler {
   private final AtomicReference<DesktopHomeComponent> home = new AtomicReference<>(new DesktopHomeComponent.Default());
   private final ArrayList<Integer> appRenderIndexOrder = new ArrayList<>();
   private final Map<Integer, DesktopApp> appsByIndex = new HashMap<>();
-  private final AtomicInteger appIdTracker = new AtomicInteger();
+  private final AtomicInteger appIndexTracker = new AtomicInteger();
 
   public DesktopOverlayHandler(@Nonnull DesktopComputer computer) {
     this.computer = computer;
 
-    registerApp(new DesktopAppWindowed(new PaintApp()));
+    registerApp(new DesktopAppWindowed(new PaintApp())); // TODO this is for testing
   }
 
   public void registerHandlers() {
-    computer.getRenderHandler().registerRendererAfter((__, output) -> {
+    computer.getRenderHandler().registerRendererAfter((output) -> {
       home.get().render(output);
 
       // reversed loop, render lowest first
@@ -66,7 +66,7 @@ public class DesktopOverlayHandler {
         DesktopCursorDisplay.DefaultCursors.getDefault().draw(output, cursor);
       }
     });
-    computer.registerCursorClickListener((__, player, cursor, right) -> {
+    computer.registerCursorClickListener((player, cursor, right) -> {
       for (int i = 0; i < appRenderIndexOrder.size(); i++) {
         int index = appRenderIndexOrder.get(i);
         DesktopApp app = appsByIndex.get(index);
@@ -84,7 +84,7 @@ public class DesktopOverlayHandler {
         }
       }
     });
-    computer.registerCursorMoveListener((__, player, from, to) -> {
+    computer.registerCursorMoveListener((player, from, to) -> {
       for (int index : appRenderIndexOrder) {
         DesktopApp app = appsByIndex.get(index);
         Dimensions dimensions = app.getInteractionDimensions(player);
@@ -100,7 +100,7 @@ public class DesktopOverlayHandler {
   }
 
   public void registerApp(@Nonnull DesktopApp app) {
-    int index = appIdTracker.incrementAndGet();
+    int index = appIndexTracker.incrementAndGet();
     app.init(computer, index);
 
     appsByIndex.put(index, app);
