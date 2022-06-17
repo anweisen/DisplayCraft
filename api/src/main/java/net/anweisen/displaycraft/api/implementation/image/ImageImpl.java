@@ -157,4 +157,9 @@ public class ImageImpl implements Image {
   public byte[] getContent() {
     return content;
   }
+
+  @Override
+  public String toString() {
+    return "Image[" + width + "x" + height + "]";
+  }
 }
