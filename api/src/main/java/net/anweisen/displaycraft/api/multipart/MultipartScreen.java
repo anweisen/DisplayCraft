@@ -197,18 +197,4 @@ public class MultipartScreen {
     return coordinate;
   }
 
-  @FunctionalInterface
-  public interface RenderFilter {
-
-    /**
-     * @param fullImage the full image on the whole screen
-     * @param clip      the content of the current part
-     * @param x         the x position of the tile inside the screen
-     * @param y         the y position of the tile inside the screen
-     * @return whether the current clip/tile should be rendered
-     * @see MultipartScreen#render(Collection, Image, RenderFilter)
-     */
-    boolean shouldRender(@Nonnull Image fullImage, @Nonnull Image clip, int x, int y);
-
-  }
 }
