@@ -2,10 +2,10 @@ package net.anweisen.displaycraft.desktop.computer;
 
 import net.anweisen.displaycraft.api.Cursor;
 import net.anweisen.displaycraft.api.multipart.MultipartScreen;
+import net.anweisen.displaycraft.api.multipart.render.ScreenRenderHandler;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorClickListener;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorMoveListener;
 import net.anweisen.displaycraft.desktop.computer.overlay.DesktopOverlayHandler;
-import net.anweisen.displaycraft.api.multipart.render.ScreenRenderHandler;
 import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -21,9 +21,9 @@ public class DesktopComputer {
   private static final Collection<DesktopComputer> instances = new CopyOnWriteArrayList<>();
 
   private final MultipartScreen screen;
+  private final ScreenRenderHandler renderHandler;
   private final DesktopInteractionCursor cursor;
   private final DesktopPlayerBridge playerBridge;
-  private final ScreenRenderHandler renderHandler;
   private final DesktopOverlayHandler overlayHandler;
 
   private final Collection<DesktopCursorClickListener> clickListeners = new CopyOnWriteArrayList<>();
@@ -34,6 +34,7 @@ public class DesktopComputer {
     this.cursor = cursor;
 
     this.renderHandler = new ScreenRenderHandler(screen);
+
     this.playerBridge = new DesktopPlayerBridge(this);
     this.overlayHandler = new DesktopOverlayHandler(this);
 

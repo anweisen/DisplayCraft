@@ -29,6 +29,7 @@ public class DesktopCursorDisplay {
     return hotspotY;
   }
 
+  @Nonnull
   public Image getImage() {
     return image;
   }

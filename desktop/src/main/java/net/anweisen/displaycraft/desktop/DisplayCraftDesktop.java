@@ -48,9 +48,9 @@ public class DisplayCraftDesktop extends JavaPlugin {
 //    computer.registerCursorClickListener(drawing);
 //    computer.registerCursorMoveListener(drawing);
 //    computer.getRenderHandler().registerRendererAfter(drawing);
-//    computer.getRenderHandler().registerRendererAfter((__, image) -> {
+//    computer.getRenderHandler().registerRendererAfter(image -> {
 //      for (Cursor cursor : computer.getCursor().getCursorPositions()) {
-//        DefaultCursors.getMove().draw(image, cursor);
+//        DefaultCursors.getCrosshair().draw(image, cursor);
 //      }
 //    });
 
@@ -79,13 +79,13 @@ public class DisplayCraftDesktop extends JavaPlugin {
     private Image image;
 
     @Override
-    public void render(@Nonnull DesktopComputer computer, @Nonnull Image output) {
+    public void render(@Nonnull Image output) {
       if (image == null) image = output;
       output.drawImage(0, 0, image);
     }
 
     @Override
-    public void handleClick(@Nonnull DesktopComputer computer, @Nonnull Player player, @Nonnull Cursor cursor, boolean right) {
+    public void handleClick(@Nonnull Player player, @Nonnull Cursor cursor, boolean right) {
       if (right) {
         image.setCurrentColor(MapPalette.LIGHT_GREEN);
         DrawHelper.fillBucket(image, image.getPixel(cursor.getAbsoluteX(), cursor.getAbsoluteY()), cursor.getAbsoluteX(), cursor.getAbsoluteY());
@@ -97,7 +97,7 @@ public class DisplayCraftDesktop extends JavaPlugin {
     }
 
     @Override
-    public void handleMove(@Nonnull DesktopComputer computer, @Nonnull Player player, @Nonnull Cursor from, @Nonnull Cursor to) {
+    public void handleMove(@Nonnull Player player, @Nonnull Cursor from, @Nonnull Cursor to) {
       if (drawing.contains(player)) {
         image.setCurrentColor(MapPalette.LIGHT_GREEN);
         image.drawStroke(from.getAbsoluteX(), from.getAbsoluteY(), to.getAbsoluteX(), to.getAbsoluteY(), 3);

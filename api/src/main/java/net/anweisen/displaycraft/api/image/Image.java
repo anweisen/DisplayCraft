@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
  *
  * @author anweisen | https://github.com/anweisen
  * @see Images
+ * @see DrawHelper
  * @since 1.0
  */
 public interface Image {
