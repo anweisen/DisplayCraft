@@ -1,5 +1,6 @@
 package net.anweisen.displaycraft.api.image;
 
+import org.bukkit.map.MapPalette;
 import javax.annotation.Nonnull;
 import java.awt.*;
 
@@ -9,7 +10,8 @@ import java.awt.*;
  */
 public final class ColorPalette {
 
-  public static final byte TRANSPARENT = 0;
+  public static final byte
+    TRANSPARENT = 0;
 
   private ColorPalette() {
   }
@@ -27,6 +29,22 @@ public final class ColorPalette {
     double weightG = 4.0;
     double weightB = 2 + (255 - rmean) / 256.0;
     return weightR * r * r + weightG * g * g + weightB * b * b;
+  }
+
+  @SuppressWarnings("deprecation")
+  public static byte matchColor(@Nonnull Color color) {
+    return MapPalette.matchColor(color);
+  }
+
+  @SuppressWarnings("deprecation")
+  public static byte matchColor(int r, int g, int b) {
+    return MapPalette.matchColor(r, g, b);
+  }
+
+  @Nonnull
+  @SuppressWarnings("deprecation")
+  public static Color getColor(byte color) {
+    return MapPalette.getColor(color);
   }
 
 }

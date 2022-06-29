@@ -28,7 +28,6 @@ public interface ScreenTracer {
   final class TraceResult {
 
     private final Position screen;
-
     private final Cursor cursor;
 
     public TraceResult(@Nonnull Position screen, @Nonnull Cursor cursor) {

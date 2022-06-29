@@ -19,6 +19,7 @@ public class ImageImpl implements Image {
 
   public ImageImpl(int width, int height) {
     Images.checkSizes(width, height);
+
     this.width = width;
     this.height = height;
     this.content = new byte[width * height];
@@ -27,6 +28,7 @@ public class ImageImpl implements Image {
   public ImageImpl(int width, int height, byte[] content) {
     Images.checkSizes(width, height);
     Images.checkResolution(width, height, content.length);
+
     this.width = width;
     this.height = height;
     this.content = content;

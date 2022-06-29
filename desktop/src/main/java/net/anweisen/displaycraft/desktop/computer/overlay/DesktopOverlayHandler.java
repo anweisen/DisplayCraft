@@ -5,8 +5,6 @@ import net.anweisen.displaycraft.api.image.Dimensions;
 import net.anweisen.displaycraft.desktop.computer.DesktopComputer;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorDisplay;
 import net.anweisen.displaycraft.desktop.computer.overlay.app.DesktopApp;
-import net.anweisen.displaycraft.desktop.computer.overlay.app.windowed.DesktopAppWindowed;
-import net.anweisen.displaycraft.desktop.computer.overlay.app.windowed.apps.PaintApp;
 import net.anweisen.displaycraft.desktop.computer.overlay.home.DesktopHomeComponent;
 import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
@@ -31,8 +29,6 @@ public class DesktopOverlayHandler {
 
   public DesktopOverlayHandler(@Nonnull DesktopComputer computer) {
     this.computer = computer;
-
-    registerApp(new DesktopAppWindowed(new PaintApp())); // TODO this is for testing
   }
 
   public void registerHandlers() {
@@ -105,6 +101,11 @@ public class DesktopOverlayHandler {
 
     appsByIndex.put(index, app);
     appRenderIndexOrder.add(0, index);
+  }
+
+  public void registerApps(@Nonnull DesktopApp... apps) {
+    for (DesktopApp app : apps)
+      registerApp(app);
   }
 
   @Nonnull

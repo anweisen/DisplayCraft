@@ -1,25 +1,17 @@
 package net.anweisen.displaycraft.desktop;
 
 import net.anweisen.displaycraft.DisplayCraft;
-import net.anweisen.displaycraft.api.Cursor;
 import net.anweisen.displaycraft.api.Direction;
 import net.anweisen.displaycraft.api.Position;
-import net.anweisen.displaycraft.api.image.DrawHelper;
-import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.api.image.Images;
+import net.anweisen.displaycraft.api.multipart.MultipartScreen;
 import net.anweisen.displaycraft.desktop.computer.DesktopComputer;
 import net.anweisen.displaycraft.desktop.computer.DesktopInteractionCursor;
-import net.anweisen.displaycraft.api.multipart.MultipartScreen;
-import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorClickListener;
-import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorMoveListener;
-import net.anweisen.displaycraft.api.multipart.render.ScreenRenderer;
+import net.anweisen.displaycraft.desktop.computer.overlay.app.windowed.DesktopAppWindowed;
+import net.anweisen.displaycraft.desktop.computer.overlay.app.windowed.apps.PaintApp;
 import net.anweisen.displaycraft.desktop.listener.PlayerInteractionListener;
 import org.bukkit.entity.Player;
-import org.bukkit.map.MapPalette;
 import org.bukkit.plugin.java.JavaPlugin;
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -43,16 +35,7 @@ public class DisplayCraftDesktop extends JavaPlugin {
       new DesktopInteractionCursor(10, 1000 / 40)
     );
     computer.startTasks();
-
-//    Drawing drawing = new Drawing();
-//    computer.registerCursorClickListener(drawing);
-//    computer.registerCursorMoveListener(drawing);
-//    computer.getRenderHandler().registerRendererAfter(drawing);
-//    computer.getRenderHandler().registerRendererAfter(image -> {
-//      for (Cursor cursor : computer.getCursor().getCursorPositions()) {
-//        DefaultCursors.getCrosshair().draw(image, cursor);
-//      }
-//    });
+    computer.getOverlayHandler().registerApps(new DesktopAppWindowed(new PaintApp()));
 
     DisplayCraft.getInstance().getExecutorService().scheduleAtFixedRate(() -> {
       long start = System.nanoTime();
@@ -73,35 +56,4 @@ public class DisplayCraftDesktop extends JavaPlugin {
     computer.destroy();
   }
 
-  public class Drawing implements ScreenRenderer, DesktopCursorClickListener, DesktopCursorMoveListener {
-
-    private final Collection<Player> drawing = new ArrayList<>();
-    private Image image;
-
-    @Override
-    public void render(@Nonnull Image output) {
-      if (image == null) image = output;
-      output.drawImage(0, 0, image);
-    }
-
-    @Override
-    public void handleClick(@Nonnull Player player, @Nonnull Cursor cursor, boolean right) {
-      if (right) {
-        image.setCurrentColor(MapPalette.LIGHT_GREEN);
-        DrawHelper.fillBucket(image, image.getPixel(cursor.getAbsoluteX(), cursor.getAbsoluteY()), cursor.getAbsoluteX(), cursor.getAbsoluteY());
-        return;
-      }
-
-      if (drawing.contains(player)) drawing.remove(player);
-      else drawing.add(player);
-    }
-
-    @Override
-    public void handleMove(@Nonnull Player player, @Nonnull Cursor from, @Nonnull Cursor to) {
-      if (drawing.contains(player)) {
-        image.setCurrentColor(MapPalette.LIGHT_GREEN);
-        image.drawStroke(from.getAbsoluteX(), from.getAbsoluteY(), to.getAbsoluteX(), to.getAbsoluteY(), 3);
-      }
-    }
-  }
 }

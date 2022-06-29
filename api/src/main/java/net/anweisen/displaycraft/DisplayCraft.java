@@ -35,10 +35,9 @@ public class DisplayCraft extends JavaPlugin {
     getLogger().info("Detected server version " + Reflect.VERSION + " at " + Reflect.CRAFTBUKKIT_PREFIX + "/" + Reflect.MINECRAFT_PREFIX);
 
     executorService = Executors.newScheduledThreadPool(3);
-    nmsProvider = Reflect.newNmsProvider();
-
+    nmsProvider     = Reflect.newNmsProvider();
     displayProvider = new DisplayProviderImpl(nmsProvider);
-    screenTracer = new ScreenTracerImpl();
+    screenTracer    = new ScreenTracerImpl();
 
     getLogger().info("Provided scheduled thread pool executor with 3 threads");
     getLogger().info("Using nms provider " + nmsProvider.getClass().getName() + "..");
