@@ -108,7 +108,7 @@ public class MultipartScreen {
     for (int y = 0; y < sizeY; y++) {
       for (int x = 0; x < sizeX; x++) {
         if (position[y][x].getFirst().equals(result.getScreen())) {
-          return Cursor.scaleRelatives(result.getCoordinates(), x, y, sizeX, sizeY, resolution);
+          return Cursor.scaleRelatives(result.getCursor(), x, y, sizeX, sizeY, resolution);
         }
       }
     }

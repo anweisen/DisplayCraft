@@ -41,7 +41,7 @@ public interface ScreenTracer {
     }
 
     @Nonnull
-    public Cursor getCoordinates() {
+    public Cursor getCursor() {
       return cursor;
     }
 
