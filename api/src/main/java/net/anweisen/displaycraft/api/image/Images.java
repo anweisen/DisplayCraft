@@ -1,7 +1,9 @@
 package net.anweisen.displaycraft.api.image;
 
 import net.anweisen.displaycraft.api.implementation.image.ImageImpl;
+import org.bukkit.map.MapPalette;
 import javax.annotation.Nonnull;
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
 /**
@@ -39,6 +41,12 @@ public final class Images {
   @Nonnull
   public static Image copyImage(@Nonnull Image image) {
     return newImage(image.getWidth(), image.getHeight(), Arrays.copyOf(image.getContent(), image.getContent().length));
+  }
+
+  @Nonnull
+  @SuppressWarnings("deprecation")
+  public static Image convertImage(@Nonnull BufferedImage image) {
+    return newImage(image.getWidth(), image.getHeight(), MapPalette.imageToBytes(image));
   }
 
   public static void checkBounds(int position, int size, int max) {

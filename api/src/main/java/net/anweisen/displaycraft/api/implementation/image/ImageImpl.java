@@ -4,7 +4,13 @@ import net.anweisen.displaycraft.api.image.ColorPalette;
 import net.anweisen.displaycraft.api.image.Dimensions;
 import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.api.image.Images;
+import org.bukkit.map.MapPalette;
 import javax.annotation.Nonnull;
+import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
 /**
  * @author anweisen | https://github.com/anweisen
@@ -100,6 +106,21 @@ public class ImageImpl implements Image {
   }
 
   @Override
+  public void drawImage(int destinationX, int destinationY, int sourceX, int sourceY, int width, int height, @Nonnull byte[] image, boolean overwriteAsTransparent) {
+    Images.checkResolution(width, height, image.length);
+    Images.checkBounds(destinationX, width, this.width);
+    Images.checkBounds(destinationY, height, this.height);
+
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        byte pixel = image[sourceY + i * width + sourceX + j];
+        if (!overwriteAsTransparent && pixel == ColorPalette.TRANSPARENT) continue;
+        content[(i + destinationY) * this.width + destinationX + j] = pixel;
+      }
+    }
+  }
+
+  @Override
   public void drawImagePart(int destinationX, int destinationY, int sourceX, int sourceY, int width, int height, @Nonnull Image image, boolean overwriteAsTransparent) {
     Images.checkBounds(sourceX, width, image.getWidth());
     Images.checkBounds(sourceY, height, image.getHeight());
@@ -118,6 +139,30 @@ public class ImageImpl implements Image {
   @Override
   public void drawImagePart(int destinationX, int destinationY, @Nonnull Dimensions dimensions, @Nonnull Image image) {
     drawImagePart(destinationX, destinationY, dimensions.getX(), dimensions.getY(), dimensions.getWidth(), dimensions.getHeight(), image, false);
+  }
+
+  @Override
+  public void drawString(int x, int y, @Nonnull Font font, @Nonnull String text) {
+    FontRenderContext fontRenderContext = new FontRenderContext(AffineTransform.getScaleInstance(1, 1), true, true);
+    Rectangle2D bounds = font.getStringBounds(text, fontRenderContext); // faster than using new TextLayout()
+    BufferedImage temp = new BufferedImage((int) bounds.getWidth(), (int) bounds.getHeight(), BufferedImage.TYPE_INT_ARGB);
+    Graphics2D graphics = temp.createGraphics();
+    graphics.setFont(font);
+    graphics.setColor(Color.white);
+    graphics.drawString(text, 0, (int) bounds.getHeight());
+    graphics.dispose();
+
+    int[] pixels = new int[temp.getWidth() * temp.getHeight()];
+    temp.getRGB(0, 0, temp.getWidth(), temp.getHeight(), pixels, 0, temp.getWidth());
+
+    // TODO write directly to buffer
+    byte[] result = new byte[temp.getWidth() * temp.getHeight()];
+    for (int i = 0; i < pixels.length; i++) {
+      if (pixels[i] != 0)
+        result[i] = color;
+    }
+
+    this.drawImage(x, y, 0, 0, temp.getWidth(), temp.getHeight(), result, false);
   }
 
   @Nonnull

@@ -42,6 +42,7 @@ public class DesktopOverlayHandler {
         app.render(output);
       }
 
+      cursors:
       for (var entry : computer.getCursor().getPlayerCursorPositions()) {
         Cursor cursor = entry.getValue();
         Player player = entry.getKey();
@@ -53,7 +54,7 @@ public class DesktopOverlayHandler {
           if (dimensions.contains(cursor.getAbsoluteX(), cursor.getAbsoluteY())) {
             DesktopCursorDisplay display = app.getCursorDisplay(player, cursor);
             display.draw(output, cursor);
-            break;
+            continue cursors;
           }
         }
 

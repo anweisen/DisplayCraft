@@ -2,6 +2,7 @@ package net.anweisen.displaycraft.api.image;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import java.awt.*;
 
 /**
  * We use a custom api for creating images, because using the java builtin awt classes
@@ -34,9 +35,13 @@ public interface Image {
 
   void drawImage(int x, int y, @Nonnull Image image);
 
+  void drawImage(int destinationX, int destinationY, int sourceX, int sourceY, int width, int height, @Nonnull byte[] image, boolean overwriteAsTransparent);
+
   void drawImagePart(int destinationX, int destinationY, int sourceX, int sourceY, int width, int height, @Nonnull Image image, boolean overwriteAsTransparent);
 
   void drawImagePart(int destinationX, int destinationY, @Nonnull Dimensions dimensions, @Nonnull Image image);
+
+  void drawString(int x, int y, @Nonnull Font font, @Nonnull String text);
 
   @Nonnull
   Image clipImage(int x, int y, int width, int height);

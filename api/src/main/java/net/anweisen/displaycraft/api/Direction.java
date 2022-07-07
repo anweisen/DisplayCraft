@@ -16,7 +16,8 @@ public enum Direction {
 
   /**
    * Not supported/implemented yet
-   * Also, only available in higher versions (starting from 1.13+)
+   * <p>
+   * Only available in higher versions (starting from 1.13+)
    *
    * @see #DOWN
    */
@@ -25,7 +26,8 @@ public enum Direction {
 
   /**
    * Not supported/implemented yet
-   * Also, only available in higher versions (starting from 1.13+)
+   * <p>
+   * Only available in higher versions (starting from 1.13+)
    *
    * @see #UP
    */
