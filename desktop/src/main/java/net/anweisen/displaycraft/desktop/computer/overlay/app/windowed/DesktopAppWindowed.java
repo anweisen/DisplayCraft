@@ -11,6 +11,7 @@ import net.anweisen.displaycraft.desktop.computer.overlay.app.DesktopApp;
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapPalette;
 import javax.annotation.Nonnull;
+import java.awt.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -25,8 +26,9 @@ public class DesktopAppWindowed implements DesktopApp {
   private DesktopComputer computer;
   private AppWindowHandler handler;
 
-  private int bar = 12;
+  private int bar = 14;
   private int scaleThreshold = 6;
+  private Font barFont = new Font("Arial", Font.PLAIN, 12);
 
   private final Collection<Player> moving = new LinkedList<>();
   private Map<Player, AppWindowScaleMode> scaleMode = new HashMap<>();
@@ -50,6 +52,9 @@ public class DesktopAppWindowed implements DesktopApp {
 
     screen.setCurrentColor(MapPalette.GRAY_2);
     screen.fillRect(dimensions.withHeight(bar));
+
+    screen.setCurrentColor(MapPalette.WHITE);
+    screen.drawString(dimensions.getX() + 2, dimensions.getY() - 2, barFont, handler.getClass().getSimpleName());
 
     Dimensions appDimensions = getAppDimensions();
     Image rendererImage = Images.newImage(appDimensions.getWidth(), appDimensions.getHeight());
