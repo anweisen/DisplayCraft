@@ -200,5 +200,10 @@ public class DesktopCursorDisplay {
       }));
     }
 
+    @Nonnull
+    public static DesktopCursorDisplay getEmpty() {
+      return new DesktopCursorDisplay(0, 0, Images.zero());
+    }
+
   }
 }

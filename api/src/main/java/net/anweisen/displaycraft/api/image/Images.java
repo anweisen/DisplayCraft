@@ -20,6 +20,11 @@ public final class Images {
   }
 
   @Nonnull
+  public static Image zero() {
+    return newImage(0, 0, new byte[0]);
+  }
+
+  @Nonnull
   public static Image newImage(int width, int height) {
     return new ImageImpl(width, height);
   }
