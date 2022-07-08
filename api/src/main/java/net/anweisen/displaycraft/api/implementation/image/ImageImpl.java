@@ -93,7 +93,7 @@ public class ImageImpl implements Image {
     float fraction = (float) diffY / (float) runs;
     int height = (int) Math.max(Math.ceil(Math.abs(fraction)), 1);
     for (int i = 0; i < runs; i++) {
-      int x = diffX < 0 ? -i : i;
+      int x = diffX < 0 ? -i : i; // TODO Math.abs?
       int y = (int) (i * fraction);
 
       fillRect(startX + x, fraction < 0 ? startY + y - height : startY + y, size, height + size);
