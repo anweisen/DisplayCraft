@@ -142,7 +142,7 @@ public class ImageImpl implements Image {
   }
 
   @Override
-  public void drawString(int x, int y, @Nonnull Font font, @Nonnull String text) {
+  public void drawString(int destinationX, int destinationY, @Nonnull Font font, @Nonnull String text) {
     FontRenderContext fontRenderContext = new FontRenderContext(AffineTransform.getScaleInstance(1, 1), true, true);
     Rectangle2D bounds = font.getStringBounds(text, fontRenderContext); // faster than using new TextLayout()
     BufferedImage temp = new BufferedImage((int) bounds.getWidth(), (int) bounds.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -155,14 +155,14 @@ public class ImageImpl implements Image {
     int[] pixels = new int[temp.getWidth() * temp.getHeight()];
     temp.getRGB(0, 0, temp.getWidth(), temp.getHeight(), pixels, 0, temp.getWidth());
 
-    // TODO write directly to buffer
-    byte[] result = new byte[temp.getWidth() * temp.getHeight()];
-    for (int i = 0; i < pixels.length; i++) {
-      if (pixels[i] != 0)
-        result[i] = color;
+    for (int y = 0; y < temp.getHeight(); y++) {
+      for (int x = 0; x < temp.getWidth(); x++) {
+        int pixel = pixels[y * temp.getWidth() + x];
+        if (pixel != 0) {
+          content[(destinationY + y) * this.width + destinationX + x] = currentColor;
+        }
+      }
     }
-
-    this.drawImage(x, y, 0, 0, temp.getWidth(), temp.getHeight(), result, false);
   }
 
   @Nonnull
