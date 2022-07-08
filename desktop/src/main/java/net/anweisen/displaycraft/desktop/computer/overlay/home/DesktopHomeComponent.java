@@ -31,7 +31,7 @@ public interface DesktopHomeComponent {
         graphics.drawImage(read, 0, 0, image.getWidth(), image.getHeight(), null);
         graphics.dispose();
 
-        background = Images.newImage(image.getWidth(), image.getHeight(), MapPalette.imageToBytes(image));
+        background = Images.convertImage(image);
       } catch (IOException e) {
         e.printStackTrace();
         throw new RuntimeException(e);
