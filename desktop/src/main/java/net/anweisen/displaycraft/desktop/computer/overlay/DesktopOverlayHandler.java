@@ -58,9 +58,12 @@ public class DesktopOverlayHandler {
           }
         }
 
-        // no app is target, use default
-        // TODO home screen
-        DesktopCursorDisplay.DefaultCursors.getDefault().draw(output, cursor);
+        // no app is target, use home component when avaialble or fallback to default
+        if (home.get() != null) {
+          home.get().getCursorDisplay(player, cursor).draw(output, cursor);
+        } else {
+          DesktopCursorDisplay.DefaultCursors.getDefault().draw(output, cursor);
+        }
       }
     });
     computer.registerCursorClickListener((player, cursor, right) -> {

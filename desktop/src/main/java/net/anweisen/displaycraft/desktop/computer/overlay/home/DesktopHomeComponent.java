@@ -2,6 +2,7 @@ package net.anweisen.displaycraft.desktop.computer.overlay.home;
 
 import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.api.image.Images;
+import org.bukkit.entity.Player;
 import org.bukkit.map.MapPalette;
 import javax.annotation.Nonnull;
 import javax.imageio.ImageIO;
@@ -17,6 +18,9 @@ import java.net.URL;
 public interface DesktopHomeComponent {
 
   void render(@Nonnull Image image);
+
+  @Nonnull
+  DesktopCursorDisplay getCursorDisplay(@Nonnull Player player, @Nonnull Cursor cursor);
 
   class Default implements DesktopHomeComponent {
 
