@@ -1,7 +1,9 @@
 package net.anweisen.displaycraft.desktop.computer.overlay.home;
 
+import net.anweisen.displaycraft.api.Cursor;
 import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.api.image.Images;
+import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapPalette;
 import javax.annotation.Nonnull;
@@ -47,6 +49,12 @@ public interface DesktopHomeComponent {
       image.setCurrentColor(color);
       image.drawImage(0, 0, background);
       image.fillRect(0, image.getHeight() - 32, image.getWidth(), 32);
+    }
+
+    @Nonnull
+    @Override
+    public DesktopCursorDisplay getCursorDisplay(@Nonnull Player player, @Nonnull Cursor cursor) {
+      return DesktopCursorDisplay.DefaultCursors.getDefault();
     }
   }
 
