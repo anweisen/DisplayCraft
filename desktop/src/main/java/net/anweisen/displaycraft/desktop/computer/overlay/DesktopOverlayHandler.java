@@ -58,7 +58,7 @@ public class DesktopOverlayHandler {
           }
         }
 
-        // no app is target, use home component when avaialble or fallback to default
+        // no app is target, use home component when available or fallback to default
         if (home.get() != null) {
           home.get().getCursorDisplay(player, cursor).draw(output, cursor);
         } else {
