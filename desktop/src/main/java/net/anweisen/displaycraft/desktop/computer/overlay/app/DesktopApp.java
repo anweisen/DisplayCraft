@@ -1,7 +1,7 @@
 package net.anweisen.displaycraft.desktop.computer.overlay.app;
 
 import net.anweisen.displaycraft.api.Cursor;
-import net.anweisen.displaycraft.api.image.Dimensions;
+import net.anweisen.displaycraft.api.image.scale.Dimensions;
 import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.desktop.computer.DesktopComputer;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorDisplay;

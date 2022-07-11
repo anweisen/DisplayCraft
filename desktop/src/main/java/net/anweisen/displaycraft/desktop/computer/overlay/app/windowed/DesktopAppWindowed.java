@@ -1,7 +1,7 @@
 package net.anweisen.displaycraft.desktop.computer.overlay.app.windowed;
 
 import net.anweisen.displaycraft.api.Cursor;
-import net.anweisen.displaycraft.api.image.Dimensions;
+import net.anweisen.displaycraft.api.image.scale.Dimensions;
 import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.api.image.Images;
 import net.anweisen.displaycraft.desktop.computer.DesktopComputer;
@@ -23,15 +23,15 @@ import java.util.Map;
  */
 public class DesktopAppWindowed implements DesktopApp {
 
-  private DesktopComputer computer;
-  private AppWindowHandler handler;
+  protected DesktopComputer computer;
+  protected AppWindowHandler handler;
 
   private int bar = 14;
   private int scaleThreshold = 6;
   private Font barFont = new Font("Arial", Font.PLAIN, 12);
 
+  private final Map<Player, AppWindowScaleMode> scaleMode = new HashMap<>();
   private final Collection<Player> moving = new LinkedList<>();
-  private Map<Player, AppWindowScaleMode> scaleMode = new HashMap<>();
 
   private Dimensions dimensions;
 

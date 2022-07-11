@@ -1,7 +1,7 @@
 package net.anweisen.displaycraft.desktop.computer.overlay.app.windowed;
 
 import net.anweisen.displaycraft.api.Cursor;
-import net.anweisen.displaycraft.api.image.Dimensions;
+import net.anweisen.displaycraft.api.image.scale.Dimensions;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorDisplay;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorDisplay.DefaultCursors;
 import javax.annotation.CheckReturnValue;

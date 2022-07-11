@@ -5,6 +5,8 @@ import net.anweisen.displaycraft.api.Cursor;
 import net.anweisen.displaycraft.api.image.DrawHelper;
 import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.api.image.Images;
+import net.anweisen.displaycraft.api.image.scale.PositionOrigin;
+import net.anweisen.displaycraft.api.image.scale.Scaling;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorDisplay;
 import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorDisplay.DefaultCursors;
 import net.anweisen.displaycraft.desktop.computer.overlay.app.windowed.AppWindowHandler;
@@ -47,10 +49,22 @@ public class PaintApp implements AppWindowHandler, Listener {
     if (image.getWidth() != cache.getWidth() || image.getHeight() != cache.getHeight()) {
       image.drawImagePart(0, 0, 0, 0, Math.min(image.getWidth(), cache.getWidth()), Math.min(image.getHeight(), cache.getHeight()), cache, false);
       cache = image;
+      drawUI(image);
       return;
     }
 
     image.drawImage(0, 0, cache);
+    drawUI(image);
+  }
+
+  protected void drawUI(@Nonnull Image image) {
+    image.setCurrentColor(MapPalette.matchColor(Color.white));
+    image.fillRoundRect(
+      PositionOrigin.LEFT_CENTER,
+      Scaling.width(.92), Scaling.height(0.5),
+      Scaling.width(.05), Scaling.width(.05),
+      Scaling.absolute(10)
+    );
   }
 
   @Override

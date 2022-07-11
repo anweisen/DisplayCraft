@@ -1,14 +1,15 @@
 package net.anweisen.displaycraft.api.implementation.image;
 
 import net.anweisen.displaycraft.api.image.ColorPalette;
-import net.anweisen.displaycraft.api.image.Dimensions;
 import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.api.image.Images;
+import net.anweisen.displaycraft.api.image.scale.Dimensions;
+import net.anweisen.displaycraft.api.image.scale.PositionOrigin;
+import net.anweisen.displaycraft.api.image.scale.Scaling;
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 /**
@@ -20,7 +21,7 @@ public class ImageImpl implements Image {
   private final int width, height;
   private final byte[] content;
 
-  private byte color;
+  private byte currentColor;
 
   public ImageImpl(int width, int height) {
     Images.checkSizes(width, height);
@@ -51,17 +52,18 @@ public class ImageImpl implements Image {
 
   @Override
   public byte getCurrentColor() {
-    return color;
+    return currentColor;
   }
 
   @Override
   public void setCurrentColor(byte color) {
-    this.color = color;
+    this.currentColor = color;
   }
 
   @Override
   public void drawPixel(int x, int y) {
-    content[y * width + x] = color;
+    Images.checkPosition(x, y, width, height);
+    content[y * width + x] = currentColor;
   }
 
   @Override
@@ -73,7 +75,7 @@ public class ImageImpl implements Image {
     int dY = y + height;
     for (int i = y; i < dY; i++) {
       for (int j = x; j < dX; j++) {
-        content[i * this.width + j] = color;
+        content[i * this.width + j] = currentColor;
       }
     }
   }
@@ -81,6 +83,16 @@ public class ImageImpl implements Image {
   @Override
   public void fillRect(@Nonnull Dimensions dimensions) {
     fillRect(dimensions.getX(), dimensions.getY(), dimensions.getWidth(), dimensions.getHeight());
+  }
+
+  @Override
+  public void fillRect(@Nonnull PositionOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling width, @Nonnull Scaling height) {
+    fillRect(
+      origin.offsetX(x.resolve(this), width.resolve(this)),
+      origin.offsetY(y.resolve(this), height.resolve(this)),
+      width.resolve(this),
+      height.resolve(this)
+    );
   }
 
   @Override
@@ -100,6 +112,11 @@ public class ImageImpl implements Image {
   }
 
   @Override
+  public void drawStroke(@Nonnull Scaling startX, @Nonnull Scaling startY, @Nonnull Scaling destinationX, @Nonnull Scaling destinationY, @Nonnull Scaling size) {
+    this.drawStroke(startX.resolve(this), startY.resolve(this), destinationX.resolve(this), destinationY.resolve(this), size.resolve(this));
+  }
+
+  @Override
   public void drawCircle(int x, int y, int radius) {
     drawCircle(x, y, radius, 1);
   }
@@ -110,8 +127,26 @@ public class ImageImpl implements Image {
   }
 
   @Override
+  public void drawCircle(@Nonnull PositionOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling radius, @Nonnull Scaling thickness) {
+    this.drawCircle(
+      origin.offsetX(x.resolve(this), radius.resolve(this)),
+      origin.offsetY(y.resolve(this), radius.resolve(this)),
+      radius.resolve(this), thickness.resolve(this)
+    );
+  }
+
+  @Override
   public void fillCircle(int x, int y, int radius) {
     makeCircle(x, y, radius, true, 1);
+  }
+
+  @Override
+  public void fillCircle(@Nonnull PositionOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling radius) {
+    this.fillCircle(
+      origin.offsetX(x.resolve(this), radius.resolve(this)),
+      origin.offsetY(y.resolve(this), radius.resolve(this)),
+      radius.resolve(this)
+    );
   }
 
   public void makeCircle(int x, int y, int radius, boolean fill, int outlineThickness) {
@@ -145,8 +180,30 @@ public class ImageImpl implements Image {
   }
 
   @Override
+  public void drawRoundRect(@Nonnull PositionOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling width, @Nonnull Scaling height, @Nonnull Scaling arcRadius, @Nonnull Scaling thickness) {
+    this.drawRoundRect(
+      origin.offsetX(x.resolve(this), width.resolve(this)),
+      origin.offsetY(y.resolve(this), height.resolve(this)),
+      width.resolve(this),
+      height.resolve(this),
+      arcRadius.resolve(this),
+      thickness.resolve(this));
+  }
+
+  @Override
   public void fillRoundRect(int x, int y, int width, int height, int arcRadius) {
     makeRoundRect(x, y, width, height, arcRadius, true, 1);
+  }
+
+  @Override
+  public void fillRoundRect(@Nonnull PositionOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling width, @Nonnull Scaling height, @Nonnull Scaling arcRadius) {
+    this.fillRoundRect(
+      origin.offsetX(x.resolve(this), width.resolve(this)),
+      origin.offsetY(y.resolve(this), height.resolve(this)),
+      width.resolve(this),
+      height.resolve(this),
+      arcRadius.resolve(this)
+    );
   }
 
   public void makeRoundRect(int x, int y, int width, int height, int arcRadius, boolean fill, int outlineThickness) {
@@ -167,7 +224,7 @@ public class ImageImpl implements Image {
     }
 
     if (fill) {
-      fillRect(x, y + arcRadius, width, height - arcRadius * 2);
+      fillRect(x, y + arcRadius, width + 1, height - arcRadius * 2);
       fillRect(x + arcRadius, y, width - arcRadius * 2, height);
     } else {
       fillRect(x + arcRadius, y, width - arcRadius * 2, outlineThickness);
@@ -219,10 +276,20 @@ public class ImageImpl implements Image {
   }
 
   @Override
-  public void drawString(int destinationX, int destinationY, @Nonnull Font font, @Nonnull String text) {
+  public void drawString(int x, int y, @Nonnull Font font, @Nonnull String text) {
+    drawString(x, y, PositionOrigin.LEFT_TOP, font, text);
+  }
+
+  @Override
+  public void drawString(@Nonnull Scaling x, @Nonnull Scaling y, @Nonnull PositionOrigin origin, @Nonnull Font font, @Nonnull String text) {
+    this.drawString(x.resolve(this), y.resolve(this), origin, font, text);
+  }
+
+  @Override
+  public void drawString(int destinationX, int destinationY, @Nonnull PositionOrigin origin, @Nonnull Font font, @Nonnull String text) {
     // render text to BufferedImage, get text bounds
     FontRenderContext fontRenderContext = new FontRenderContext(AffineTransform.getScaleInstance(1, 1), true, true);
-    Rectangle2D bounds = font.getStringBounds(text, fontRenderContext); // faster than using new TextLayout()
+    Rectangle bounds = font.getStringBounds(text, fontRenderContext).getBounds(); // faster than using new TextLayout()
     BufferedImage temp = new BufferedImage((int) bounds.getWidth(), (int) bounds.getHeight(), BufferedImage.TYPE_INT_ARGB);
     Graphics2D graphics = temp.createGraphics();
     graphics.setFont(font);
@@ -234,14 +301,14 @@ public class ImageImpl implements Image {
     temp.getRGB(0, 0, temp.getWidth(), temp.getHeight(), pixels, 0, temp.getWidth());
 
     // transfer text onto image in currentColor
-    for (int y = 0; y < temp.getHeight(); y++) {
-      for (int x = 0; x < temp.getWidth(); x++) {
-        int pixel = pixels[y * temp.getWidth() + x];
-        if (pixel != 0) { // we write with Color.white
-          content[(destinationY + y) * this.width + destinationX + x] = color;
-        }
-      }
+    // https://github.com/anweisen/DisplayCraft/commit/1def8e892fb8c4fc940afb24cd9f72b887ea4164
+    byte[] result = new byte[temp.getWidth() * temp.getHeight()];
+    for (int i = 0; i < pixels.length; i++) {
+      if (pixels[i] != 0)
+        result[i] = currentColor;
     }
+
+    this.drawImage(origin.offsetX(destinationX, temp.getWidth()), origin.offsetY(destinationY, temp.getHeight()), 0, 0, temp.getWidth(), temp.getHeight(), result, false);
   }
 
   @Nonnull

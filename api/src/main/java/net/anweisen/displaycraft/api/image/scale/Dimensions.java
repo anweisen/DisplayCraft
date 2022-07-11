@@ -1,5 +1,6 @@
-package net.anweisen.displaycraft.api.image;
+package net.anweisen.displaycraft.api.image.scale;
 
+import net.anweisen.displaycraft.api.image.Image;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
