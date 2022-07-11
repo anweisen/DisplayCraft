@@ -33,6 +33,18 @@ public interface Image {
 
   void drawStroke(int startX, int startY, int destinationX, int destinationY, int size);
 
+  void drawCircle(int x, int y, int radius);
+
+  void drawCircle(int x, int y, int radius, int thickness);
+
+  void fillCircle(int x, int y, int radius);
+
+  void drawRoundRect(int x, int y, int width, int height, int arcRadius);
+
+  void drawRoundRect(int x, int y, int width, int height, int arcRadius, int thickness);
+
+  void fillRoundRect(int x, int y, int width, int height, int arcRadius);
+
   void drawImage(int x, int y, @Nonnull Image image);
 
   void drawImage(int destinationX, int destinationY, int sourceX, int sourceY, int width, int height, @Nonnull byte[] image, boolean overwriteAsTransparent);

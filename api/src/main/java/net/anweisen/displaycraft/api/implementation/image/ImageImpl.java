@@ -4,7 +4,6 @@ import net.anweisen.displaycraft.api.image.ColorPalette;
 import net.anweisen.displaycraft.api.image.Dimensions;
 import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.api.image.Images;
-import org.bukkit.map.MapPalette;
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -101,6 +100,84 @@ public class ImageImpl implements Image {
   }
 
   @Override
+  public void drawCircle(int x, int y, int radius) {
+    drawCircle(x, y, radius, 1);
+  }
+
+  @Override
+  public void drawCircle(int x, int y, int radius, int thickness) {
+    makeCircle(x, y, radius, false, thickness);
+  }
+
+  @Override
+  public void fillCircle(int x, int y, int radius) {
+    makeCircle(x, y, radius, true, 1);
+  }
+
+  public void makeCircle(int x, int y, int radius, boolean fill, int outlineThickness) {
+    Images.checkBounds(x, radius + outlineThickness / 2, width);
+    Images.checkBounds(y, radius + outlineThickness / 2, height);
+
+    int iterations = Math.max(radius, 90); // at least 90 to draw full circle with no holes
+    for (int i = -iterations; i <= iterations; i++) {
+      double quadrant = (double) (iterations - i) / iterations; // 180°=2.0 90°=1.0 0°=0.0
+      double angle = quadrant / 2d * Math.PI; // (radians): pi/2 = 90°
+      double sin = Math.sin(angle) * radius;
+      double cos = Math.cos(angle) * radius;
+
+      if (fill) {
+        fillRect(x + (int) Math.round(cos), y - (int) Math.round(sin), 1, (int) Math.round(sin) * 2);
+      } else {
+        fillRect(x + (int) Math.round(cos), y - (int) Math.round(sin), outlineThickness, outlineThickness);
+        fillRect(x + (int) Math.round(cos), y + (int) Math.round(sin), outlineThickness, outlineThickness);
+      }
+    }
+  }
+
+  @Override
+  public void drawRoundRect(int x, int y, int width, int height, int arcRadius) {
+    drawRoundRect(x, y, width, height, arcRadius, 1);
+  }
+
+  @Override
+  public void drawRoundRect(int x, int y, int width, int height, int arcRadius, int thickness) {
+    makeRoundRect(x, y, width, height, arcRadius, false, thickness);
+  }
+
+  @Override
+  public void fillRoundRect(int x, int y, int width, int height, int arcRadius) {
+    makeRoundRect(x, y, width, height, arcRadius, true, 1);
+  }
+
+  public void makeRoundRect(int x, int y, int width, int height, int arcRadius, boolean fill, int outlineThickness) {
+    int iterations = Math.max(arcRadius, 90); // at least 90 to draw arc with no holes
+    for (int i = 0; i <= iterations; i++) {
+      double quadrant = (double) (iterations - i) / iterations; // 90°=1.0 0°=0.0
+      double angle = quadrant / 2d * Math.PI; // (radians): pi/2 = 90°
+      double cos = Math.cos(angle) * arcRadius;
+      double sin = Math.sin(angle) * arcRadius;
+      int rsin = (int) Math.min(Math.round(sin), arcRadius);
+      int rcos = (int) Math.min(Math.round(cos), arcRadius);
+      int by = y + height - arcRadius + (fill ? 0 : rsin);
+
+      fillRect(x + width - arcRadius + rcos, y + arcRadius - rsin, outlineThickness, fill ? rsin : outlineThickness); // q I: top right
+      fillRect(x + arcRadius - rcos, y + arcRadius - rsin, outlineThickness, fill ? rsin : outlineThickness); // q II: top left
+      fillRect(x + arcRadius - rcos, by, outlineThickness, fill ? rsin : outlineThickness); // q III: bottom left
+      fillRect(x + width - arcRadius + rcos, by, outlineThickness, fill ? rsin : outlineThickness); // q IV: bottom right
+    }
+
+    if (fill) {
+      fillRect(x, y + arcRadius, width, height - arcRadius * 2);
+      fillRect(x + arcRadius, y, width - arcRadius * 2, height);
+    } else {
+      fillRect(x + arcRadius, y, width - arcRadius * 2, outlineThickness);
+      fillRect(x + arcRadius, y + height, width - arcRadius * 2, outlineThickness);
+      fillRect(x, y + arcRadius, outlineThickness, height - arcRadius * 2);
+      fillRect(x + width, y + arcRadius, outlineThickness, height - arcRadius * 2);
+    }
+  }
+
+  @Override
   public void drawImage(int x, int y, @Nonnull Image image) {
     drawImagePart(x, y, Dimensions.fromFull(image), image);
   }
@@ -143,6 +220,7 @@ public class ImageImpl implements Image {
 
   @Override
   public void drawString(int destinationX, int destinationY, @Nonnull Font font, @Nonnull String text) {
+    // render text to BufferedImage, get text bounds
     FontRenderContext fontRenderContext = new FontRenderContext(AffineTransform.getScaleInstance(1, 1), true, true);
     Rectangle2D bounds = font.getStringBounds(text, fontRenderContext); // faster than using new TextLayout()
     BufferedImage temp = new BufferedImage((int) bounds.getWidth(), (int) bounds.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -155,11 +233,12 @@ public class ImageImpl implements Image {
     int[] pixels = new int[temp.getWidth() * temp.getHeight()];
     temp.getRGB(0, 0, temp.getWidth(), temp.getHeight(), pixels, 0, temp.getWidth());
 
+    // transfer text onto image in currentColor
     for (int y = 0; y < temp.getHeight(); y++) {
       for (int x = 0; x < temp.getWidth(); x++) {
         int pixel = pixels[y * temp.getWidth() + x];
-        if (pixel != 0) {
-          content[(destinationY + y) * this.width + destinationX + x] = currentColor;
+        if (pixel != 0) { // we write with Color.white
+          content[(destinationY + y) * this.width + destinationX + x] = color;
         }
       }
     }
