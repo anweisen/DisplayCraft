@@ -16,6 +16,16 @@ public final class ColorPalette {
   private ColorPalette() {
   }
 
+  public static byte getColorData(int index) {
+    // minecraft has 143 colors, some of which have negative byte representations
+    return (byte) (index < 128 ? index : -129 + (index - 127));
+  }
+
+  public static int getColorIndex(byte data) {
+    // minecraft has 143 colors, some of which have negative byte representations
+    return data >= 0 ? data : data + 256;
+  }
+
   /**
    * @return the distance between the given colors in minecraft terms
    * @author Bukkit
