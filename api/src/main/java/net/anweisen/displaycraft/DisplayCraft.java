@@ -3,7 +3,7 @@ package net.anweisen.displaycraft;
 import net.anweisen.displaycraft.api.DisplayProvider;
 import net.anweisen.displaycraft.api.ScreenTracer;
 import net.anweisen.displaycraft.api.implementation.DisplayProviderImpl;
-import net.anweisen.displaycraft.api.implementation.ScreenTracerImpl;
+import net.anweisen.displaycraft.api.implementation.IterativeScreenTracerImpl;
 import net.anweisen.displaycraft.nms.NmsProvider;
 import net.anweisen.displaycraft.nms.Reflect;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,7 +38,7 @@ public class DisplayCraft extends JavaPlugin {
     nmsProvider = Reflect.newNmsProvider();
 
     displayProvider = new DisplayProviderImpl(nmsProvider);
-    screenTracer = new ScreenTracerImpl();
+    screenTracer = new IterativeScreenTracerImpl();
 
     getLogger().info("Provided scheduled thread pool executor with 3 threads");
     getLogger().info("Using nms provider " + nmsProvider.getClass().getName() + "..");

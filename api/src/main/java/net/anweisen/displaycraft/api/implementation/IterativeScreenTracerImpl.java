@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
  * @author anweisen | https://github.com/anweisen
  * @since 1.0
  */
-public class ScreenTracerImpl implements ScreenTracer {
+public class IterativeScreenTracerImpl implements ScreenTracer {
 
   @Nullable
   @Override
