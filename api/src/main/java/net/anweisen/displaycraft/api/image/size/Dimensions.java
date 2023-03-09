@@ -1,4 +1,4 @@
-package net.anweisen.displaycraft.api.image.scale;
+package net.anweisen.displaycraft.api.image.size;
 
 import net.anweisen.displaycraft.api.image.Image;
 import javax.annotation.CheckReturnValue;
@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
  * @author anweisen | https://github.com/anweisen
  * @since 1.0
  */
-public class Dimensions {
+public class Dimensions implements Sized {
 
   private final int x, y, width, height;
 
@@ -174,21 +174,20 @@ public class Dimensions {
     return y;
   }
 
+  @Override
+  @Nonnegative
   public int getWidth() {
     return width;
   }
 
+  @Override
+  @Nonnegative
   public int getHeight() {
     return height;
   }
 
   @Override
   public String toString() {
-    return "Dimensions[" +
-      "x=" + x +
-      " y=" + y +
-      " width=" + width +
-      " height=" + height +
-      ']';
+    return "Dimensions[" + "x=" + x + " y=" + y + " width=" + width + " height=" + height + ']';
   }
 }

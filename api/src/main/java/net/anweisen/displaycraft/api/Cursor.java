@@ -70,6 +70,14 @@ public class Cursor {
     return absoluteY;
   }
 
+  public int getMaxWidth() {
+    return (int) (1d / relativeX * absoluteX);
+  }
+
+  public int getMaxHeight() {
+    return (int) (1d / relativeY * absoluteY);
+  }
+
   @Nonnull
   @CheckReturnValue
   public Cursor multiply(float x, float y) {

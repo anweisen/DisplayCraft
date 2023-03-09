@@ -16,12 +16,12 @@ public final class ColorPalette {
   private ColorPalette() {
   }
 
-  public static byte getColorData(int index) {
+  public static byte fromIndex(int index) {
     // minecraft has 143 colors, some of which have negative byte representations
     return (byte) (index < 128 ? index : -129 + (index - 127));
   }
 
-  public static int getColorIndex(byte data) {
+  public static int toIndex(byte data) {
     // minecraft has 143 colors, some of which have negative byte representations
     return data >= 0 ? data : data + 256;
   }

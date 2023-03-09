@@ -1,9 +1,10 @@
 package net.anweisen.displaycraft.desktop.computer.overlay;
 
 import net.anweisen.displaycraft.api.Cursor;
-import net.anweisen.displaycraft.api.image.scale.Dimensions;
+import net.anweisen.displaycraft.api.image.size.Dimensions;
+import net.anweisen.displaycraft.api.image.ui.Sprite;
 import net.anweisen.displaycraft.desktop.computer.DesktopComputer;
-import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorDisplay;
+import net.anweisen.displaycraft.desktop.computer.cursor.DefaultCursors;
 import net.anweisen.displaycraft.desktop.computer.overlay.app.DesktopApp;
 import net.anweisen.displaycraft.desktop.computer.overlay.home.DesktopHomeComponent;
 import org.bukkit.entity.Player;
@@ -52,7 +53,7 @@ public class DesktopOverlayHandler {
           Dimensions dimensions = app.getInteractionDimensions(player);
 
           if (dimensions.contains(cursor.getAbsoluteX(), cursor.getAbsoluteY())) {
-            DesktopCursorDisplay display = app.getCursorDisplay(player, cursor);
+            Sprite display = app.getCursorSprite(player, cursor);
             display.draw(output, cursor);
             continue cursors;
           }
@@ -60,9 +61,9 @@ public class DesktopOverlayHandler {
 
         // no app is target, use home component when available or fallback to default
         if (home.get() != null) {
-          home.get().getCursorDisplay(player, cursor).draw(output, cursor);
+          home.get().getCursorSprite(player, cursor).draw(output, cursor);
         } else {
-          DesktopCursorDisplay.DefaultCursors.getDefault().draw(output, cursor);
+          DefaultCursors.getDefault().draw(output, cursor);
         }
       }
     });

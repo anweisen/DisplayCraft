@@ -9,6 +9,7 @@ import net.anweisen.displaycraft.desktop.computer.DesktopComputer;
 import net.anweisen.displaycraft.desktop.computer.DesktopInteractionCursor;
 import net.anweisen.displaycraft.desktop.computer.overlay.app.windowed.DesktopAppWindowed;
 import net.anweisen.displaycraft.desktop.computer.overlay.app.windowed.apps.PaintApp;
+import net.anweisen.displaycraft.desktop.computer.overlay.app.windowed.apps.TestApp;
 import net.anweisen.displaycraft.desktop.listener.PlayerInteractionListener;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -36,6 +37,7 @@ public class DisplayCraftDesktop extends JavaPlugin {
     );
     computer.startTasks();
     computer.getOverlayHandler().registerApps(new DesktopAppWindowed(new PaintApp()));
+//    computer.getOverlayHandler().registerApps(new DesktopAppWindowed(new TestApp()));
 
     DisplayCraft.getInstance().getExecutorService().scheduleAtFixedRate(() -> {
       long start = System.nanoTime();

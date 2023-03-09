@@ -2,7 +2,7 @@ package net.anweisen.displaycraft.desktop.computer.overlay.app.windowed;
 
 import net.anweisen.displaycraft.api.Cursor;
 import net.anweisen.displaycraft.api.image.Image;
-import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorDisplay;
+import net.anweisen.displaycraft.api.image.ui.Sprite;
 import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
 
@@ -19,6 +19,6 @@ public interface AppWindowHandler {
   void handleMove(@Nonnull Player player, @Nonnull Cursor from, @Nonnull Cursor to);
 
   @Nonnull
-  DesktopCursorDisplay getCursorDisplay(@Nonnull Player player, @Nonnull Cursor cursor);
+  Sprite getCursorSprite(@Nonnull Player player, @Nonnull Cursor cursor);
 
 }

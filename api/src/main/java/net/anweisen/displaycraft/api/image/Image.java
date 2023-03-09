@@ -1,8 +1,9 @@
 package net.anweisen.displaycraft.api.image;
 
-import net.anweisen.displaycraft.api.image.scale.Dimensions;
-import net.anweisen.displaycraft.api.image.scale.PositionOrigin;
-import net.anweisen.displaycraft.api.image.scale.Scaling;
+import net.anweisen.displaycraft.api.image.size.Dimensions;
+import net.anweisen.displaycraft.api.image.size.DrawOrigin;
+import net.anweisen.displaycraft.api.image.size.Scaling;
+import net.anweisen.displaycraft.api.image.size.Sized;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -16,11 +17,13 @@ import java.awt.*;
  * @see DrawHelper
  * @since 1.0
  */
-public interface Image {
+public interface Image extends Sized {
 
+  @Override
   @Nonnegative
   int getWidth();
 
+  @Override
   @Nonnegative
   int getHeight();
 
@@ -34,37 +37,44 @@ public interface Image {
 
   void fillRect(@Nonnull Dimensions dimensions);
 
-  void fillRect(@Nonnull PositionOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling width, @Nonnull Scaling height);
+  @Deprecated
+  void fillRect(@Nonnull DrawOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling width, @Nonnull Scaling height);
 
   void drawStroke(int startX, int startY, int destinationX, int destinationY, int size);
 
+  @Deprecated
   void drawStroke(@Nonnull Scaling startX, @Nonnull Scaling startY, @Nonnull Scaling destinationX, @Nonnull Scaling destinationY, @Nonnull Scaling size);
 
   void drawCircle(int x, int y, int radius);
 
   void drawCircle(int x, int y, int radius, int thickness);
 
-  void drawCircle(@Nonnull PositionOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling radius, @Nonnull Scaling thickness);
+  @Deprecated
+  void drawCircle(@Nonnull DrawOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling radius, @Nonnull Scaling thickness);
 
   void fillCircle(int x, int y, int radius);
 
-  void fillCircle(@Nonnull PositionOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling radius);
+  @Deprecated
+  void fillCircle(@Nonnull DrawOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling radius);
 
   void drawRoundRect(int x, int y, int width, int height, int arcRadius);
 
   void drawRoundRect(int x, int y, int width, int height, int arcRadius, int thickness);
 
-  void drawRoundRect(@Nonnull PositionOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling width, @Nonnull Scaling height, @Nonnull Scaling arcRadius, @Nonnull Scaling thickness);
+  @Deprecated
+  void drawRoundRect(@Nonnull DrawOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling width, @Nonnull Scaling height, @Nonnull Scaling arcRadius, @Nonnull Scaling thickness);
 
   void fillRoundRect(int x, int y, int width, int height, int arcRadius);
 
-  void fillRoundRect(@Nonnull PositionOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling width, @Nonnull Scaling height, @Nonnull Scaling arcRadius);
+  @Deprecated
+  void fillRoundRect(@Nonnull DrawOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling width, @Nonnull Scaling height, @Nonnull Scaling arcRadius);
 
   void drawString(int x, int y, @Nonnull Font font, @Nonnull String text);
 
-  void drawString(int x, int y, @Nonnull PositionOrigin origin, @Nonnull Font font, @Nonnull String text);
+  void drawString(int x, int y, @Nonnull DrawOrigin origin, @Nonnull Font font, @Nonnull String text);
 
-  void drawString(@Nonnull Scaling x, @Nonnull Scaling y, @Nonnull PositionOrigin origin, @Nonnull Font font, @Nonnull String text);
+  @Deprecated
+  void drawString(@Nonnull Scaling x, @Nonnull Scaling y, @Nonnull DrawOrigin origin, @Nonnull Font font, @Nonnull String text);
 
   void drawImage(int x, int y, @Nonnull Image image);
 

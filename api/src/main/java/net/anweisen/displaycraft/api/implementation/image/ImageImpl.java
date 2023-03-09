@@ -3,9 +3,9 @@ package net.anweisen.displaycraft.api.implementation.image;
 import net.anweisen.displaycraft.api.image.ColorPalette;
 import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.api.image.Images;
-import net.anweisen.displaycraft.api.image.scale.Dimensions;
-import net.anweisen.displaycraft.api.image.scale.PositionOrigin;
-import net.anweisen.displaycraft.api.image.scale.Scaling;
+import net.anweisen.displaycraft.api.image.size.Dimensions;
+import net.anweisen.displaycraft.api.image.size.DrawOrigin;
+import net.anweisen.displaycraft.api.image.size.Scaling;
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -86,7 +86,7 @@ public class ImageImpl implements Image {
   }
 
   @Override
-  public void fillRect(@Nonnull PositionOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling width, @Nonnull Scaling height) {
+  public void fillRect(@Nonnull DrawOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling width, @Nonnull Scaling height) {
     fillRect(
       origin.offsetX(x.resolve(this), width.resolve(this)),
       origin.offsetY(y.resolve(this), height.resolve(this)),
@@ -127,7 +127,7 @@ public class ImageImpl implements Image {
   }
 
   @Override
-  public void drawCircle(@Nonnull PositionOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling radius, @Nonnull Scaling thickness) {
+  public void drawCircle(@Nonnull DrawOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling radius, @Nonnull Scaling thickness) {
     this.drawCircle(
       origin.offsetX(x.resolve(this), radius.resolve(this)),
       origin.offsetY(y.resolve(this), radius.resolve(this)),
@@ -141,7 +141,7 @@ public class ImageImpl implements Image {
   }
 
   @Override
-  public void fillCircle(@Nonnull PositionOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling radius) {
+  public void fillCircle(@Nonnull DrawOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling radius) {
     this.fillCircle(
       origin.offsetX(x.resolve(this), radius.resolve(this)),
       origin.offsetY(y.resolve(this), radius.resolve(this)),
@@ -180,7 +180,7 @@ public class ImageImpl implements Image {
   }
 
   @Override
-  public void drawRoundRect(@Nonnull PositionOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling width, @Nonnull Scaling height, @Nonnull Scaling arcRadius, @Nonnull Scaling thickness) {
+  public void drawRoundRect(@Nonnull DrawOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling width, @Nonnull Scaling height, @Nonnull Scaling arcRadius, @Nonnull Scaling thickness) {
     this.drawRoundRect(
       origin.offsetX(x.resolve(this), width.resolve(this)),
       origin.offsetY(y.resolve(this), height.resolve(this)),
@@ -196,7 +196,7 @@ public class ImageImpl implements Image {
   }
 
   @Override
-  public void fillRoundRect(@Nonnull PositionOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling width, @Nonnull Scaling height, @Nonnull Scaling arcRadius) {
+  public void fillRoundRect(@Nonnull DrawOrigin origin, @Nonnull Scaling x, @Nonnull Scaling y, @Nonnull Scaling width, @Nonnull Scaling height, @Nonnull Scaling arcRadius) {
     this.fillRoundRect(
       origin.offsetX(x.resolve(this), width.resolve(this)),
       origin.offsetY(y.resolve(this), height.resolve(this)),
@@ -277,16 +277,16 @@ public class ImageImpl implements Image {
 
   @Override
   public void drawString(int x, int y, @Nonnull Font font, @Nonnull String text) {
-    drawString(x, y, PositionOrigin.LEFT_TOP, font, text);
+    drawString(x, y, DrawOrigin.LEFT_TOP, font, text);
   }
 
   @Override
-  public void drawString(@Nonnull Scaling x, @Nonnull Scaling y, @Nonnull PositionOrigin origin, @Nonnull Font font, @Nonnull String text) {
+  public void drawString(@Nonnull Scaling x, @Nonnull Scaling y, @Nonnull DrawOrigin origin, @Nonnull Font font, @Nonnull String text) {
     this.drawString(x.resolve(this), y.resolve(this), origin, font, text);
   }
 
   @Override
-  public void drawString(int destinationX, int destinationY, @Nonnull PositionOrigin origin, @Nonnull Font font, @Nonnull String text) {
+  public void drawString(int destinationX, int destinationY, @Nonnull DrawOrigin origin, @Nonnull Font font, @Nonnull String text) {
     // render text to BufferedImage, get text bounds
     FontRenderContext fontRenderContext = new FontRenderContext(AffineTransform.getScaleInstance(1, 1), true, true);
     Rectangle bounds = font.getStringBounds(text, fontRenderContext).getBounds(); // faster than using new TextLayout()

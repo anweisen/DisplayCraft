@@ -1,10 +1,10 @@
 package net.anweisen.displaycraft.desktop.computer.overlay.app;
 
 import net.anweisen.displaycraft.api.Cursor;
-import net.anweisen.displaycraft.api.image.scale.Dimensions;
 import net.anweisen.displaycraft.api.image.Image;
+import net.anweisen.displaycraft.api.image.size.Dimensions;
+import net.anweisen.displaycraft.api.image.ui.Sprite;
 import net.anweisen.displaycraft.desktop.computer.DesktopComputer;
-import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorDisplay;
 import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
 
@@ -26,6 +26,6 @@ public interface DesktopApp {
   Dimensions getInteractionDimensions(@Nonnull Player player);
 
   @Nonnull
-  DesktopCursorDisplay getCursorDisplay(@Nonnull Player player, @Nonnull Cursor cursor);
+  Sprite getCursorSprite(@Nonnull Player player, @Nonnull Cursor cursor);
 
 }

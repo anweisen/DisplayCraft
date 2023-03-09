@@ -1,12 +1,12 @@
 package net.anweisen.displaycraft.desktop.computer.overlay.app.windowed;
 
 import net.anweisen.displaycraft.api.Cursor;
-import net.anweisen.displaycraft.api.image.scale.Dimensions;
 import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.api.image.Images;
+import net.anweisen.displaycraft.api.image.size.Dimensions;
+import net.anweisen.displaycraft.api.image.ui.Sprite;
 import net.anweisen.displaycraft.desktop.computer.DesktopComputer;
-import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorDisplay;
-import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorDisplay.DefaultCursors;
+import net.anweisen.displaycraft.desktop.computer.cursor.DefaultCursors;
 import net.anweisen.displaycraft.desktop.computer.overlay.app.DesktopApp;
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapPalette;
@@ -23,16 +23,13 @@ import java.util.Map;
  */
 public class DesktopAppWindowed implements DesktopApp {
 
+  private final Map<Player, AppWindowScaleMode> scaleMode = new HashMap<>();
+  private final Collection<Player> moving = new LinkedList<>();
   protected DesktopComputer computer;
   protected AppWindowHandler handler;
-
   private int bar = 14;
   private int scaleThreshold = 6;
   private Font barFont = new Font("Arial", Font.PLAIN, 12);
-
-  private final Map<Player, AppWindowScaleMode> scaleMode = new HashMap<>();
-  private final Collection<Player> moving = new LinkedList<>();
-
   private Dimensions dimensions;
 
   public DesktopAppWindowed(@Nonnull AppWindowHandler handler) {
@@ -132,7 +129,7 @@ public class DesktopAppWindowed implements DesktopApp {
 
   @Nonnull
   @Override
-  public DesktopCursorDisplay getCursorDisplay(@Nonnull Player player, @Nonnull Cursor cursor) {
+  public Sprite getCursorSprite(@Nonnull Player player, @Nonnull Cursor cursor) {
     if (moving.contains(player))
       return DefaultCursors.getMove();
     if (scaleMode.containsKey(player))
@@ -145,7 +142,7 @@ public class DesktopAppWindowed implements DesktopApp {
       return DefaultCursors.getMove();
 
     if (getAppDimensions().contains(cursor.getAbsoluteX(), cursor.getAbsoluteY()))
-      return handler.getCursorDisplay(player, cursor);
+      return handler.getCursorSprite(player, cursor);
 
     return DefaultCursors.getDefault();
   }

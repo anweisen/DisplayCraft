@@ -59,12 +59,12 @@ public class ScreenRenderHandler {
     screen.render(viewers, image, RenderFilter.ALL);
   }
 
-  public void distributeEfficent(@Nonnull Collection<? extends Player> viewers, @Nonnull Image image) {
+  public void distributeEfficiently(@Nonnull Collection<? extends Player> viewers, @Nonnull Image image) {
     screen.render(viewers, image, store);
   }
 
   public void render(@Nonnull Collection<? extends Player> viewers) {
-    distributeEfficent(viewers, renderImage());
+    distributeEfficiently(viewers, renderImage());
   }
 
   public void renderLast(@Nonnull Collection<? extends Player> viewers) {

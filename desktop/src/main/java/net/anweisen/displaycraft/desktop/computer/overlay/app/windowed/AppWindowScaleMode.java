@@ -1,9 +1,9 @@
 package net.anweisen.displaycraft.desktop.computer.overlay.app.windowed;
 
 import net.anweisen.displaycraft.api.Cursor;
-import net.anweisen.displaycraft.api.image.scale.Dimensions;
-import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorDisplay;
-import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorDisplay.DefaultCursors;
+import net.anweisen.displaycraft.api.image.size.Dimensions;
+import net.anweisen.displaycraft.api.image.ui.Sprite;
+import net.anweisen.displaycraft.desktop.computer.cursor.DefaultCursors;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,18 +25,18 @@ public enum AppWindowScaleMode {
   BOTTOM_LEFT(DefaultCursors.getScaleDiagonalLeft(), AppWindowScaleMode.BOTTOM, AppWindowScaleMode.LEFT),
   ;
 
-  private final DesktopCursorDisplay cursor;
+  private final Sprite cursor;
   private final Tester tester;
   private final int modX, modY;
 
-  AppWindowScaleMode(@Nonnull DesktopCursorDisplay cursorDisplay, int modX, int modY, @Nonnull Tester tester) {
+  AppWindowScaleMode(@Nonnull Sprite cursorDisplay, int modX, int modY, @Nonnull Tester tester) {
     this.cursor = cursorDisplay;
     this.modX = modX;
     this.modY = modY;
     this.tester = tester;
   }
 
-  AppWindowScaleMode(@Nonnull DesktopCursorDisplay cursorDisplay, @Nonnull AppWindowScaleMode firstMode, @Nonnull AppWindowScaleMode secondMode) {
+  AppWindowScaleMode(@Nonnull Sprite cursorDisplay, @Nonnull AppWindowScaleMode firstMode, @Nonnull AppWindowScaleMode secondMode) {
     this.tester = firstMode.tester.and(secondMode.tester);
     this.modX = firstMode.modX + secondMode.modX;
     this.modY = firstMode.modY + secondMode.modY;
@@ -56,7 +56,7 @@ public enum AppWindowScaleMode {
   }
 
   @Nonnull
-  public DesktopCursorDisplay getCursor() {
+  public Sprite getCursor() {
     return cursor;
   }
 

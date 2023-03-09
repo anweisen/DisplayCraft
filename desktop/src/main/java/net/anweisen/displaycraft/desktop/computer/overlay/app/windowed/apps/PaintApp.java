@@ -5,10 +5,10 @@ import net.anweisen.displaycraft.api.Cursor;
 import net.anweisen.displaycraft.api.image.DrawHelper;
 import net.anweisen.displaycraft.api.image.Image;
 import net.anweisen.displaycraft.api.image.Images;
-import net.anweisen.displaycraft.api.image.scale.PositionOrigin;
-import net.anweisen.displaycraft.api.image.scale.Scaling;
-import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorDisplay;
-import net.anweisen.displaycraft.desktop.computer.cursor.DesktopCursorDisplay.DefaultCursors;
+import net.anweisen.displaycraft.api.image.size.DrawOrigin;
+import net.anweisen.displaycraft.api.image.size.Scaling;
+import net.anweisen.displaycraft.api.image.ui.Sprite;
+import net.anweisen.displaycraft.desktop.computer.cursor.DefaultCursors;
 import net.anweisen.displaycraft.desktop.computer.overlay.app.windowed.AppWindowHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -48,7 +48,7 @@ public class PaintApp implements AppWindowHandler, Listener {
     // rescaled window -> rescale image
     if (image.getWidth() != cache.getWidth() || image.getHeight() != cache.getHeight()) {
       image.drawImagePart(0, 0, 0, 0, Math.min(image.getWidth(), cache.getWidth()), Math.min(image.getHeight(), cache.getHeight()), cache, false);
-      cache = image;
+      cache = image.copy();
       drawUI(image);
       return;
     }
@@ -60,10 +60,16 @@ public class PaintApp implements AppWindowHandler, Listener {
   protected void drawUI(@Nonnull Image image) {
     image.setCurrentColor(MapPalette.matchColor(Color.white));
     image.fillRoundRect(
-      PositionOrigin.LEFT_CENTER,
-      Scaling.width(.92), Scaling.height(0.5),
-      Scaling.width(.05), Scaling.width(.05),
+      DrawOrigin.LEFT_CENTER,
+      Scaling.width(.92), Scaling.height(0.4),
+      Scaling.height(.15).maxByWidth(.05), Scaling.height(.15).maxByWidth(.05),
       Scaling.absolute(10)
+    );
+    image.fillRoundRect(
+      DrawOrigin.LEFT_CENTER,
+      Scaling.width(.92), Scaling.height(0.6),
+      Scaling.height(.08).maxByWidth(.05), Scaling.height(.08).maxByWidth(.05),
+      Scaling.width(.03).max(8)
     );
   }
 
@@ -93,7 +99,7 @@ public class PaintApp implements AppWindowHandler, Listener {
 
   @Nonnull
   @Override
-  public DesktopCursorDisplay getCursorDisplay(@Nonnull Player player, @Nonnull Cursor cursor) {
+  public Sprite getCursorSprite(@Nonnull Player player, @Nonnull Cursor cursor) {
     return DefaultCursors.getCrosshair();
   }
 

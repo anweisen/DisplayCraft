@@ -1,4 +1,4 @@
-package net.anweisen.displaycraft.api.image.scale;
+package net.anweisen.displaycraft.api.image.size;
 
 import net.anweisen.displaycraft.api.image.Image;
 import javax.annotation.CheckReturnValue;
@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
  * @author anweisen | https://github.com/anweisen
  * @since 1.0
  */
+@Deprecated
 public interface Scaling {
 
   @Nonnull

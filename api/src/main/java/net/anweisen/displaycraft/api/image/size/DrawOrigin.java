@@ -1,4 +1,4 @@
-package net.anweisen.displaycraft.api.image.scale;
+package net.anweisen.displaycraft.api.image.size;
 
 import javax.annotation.Nonnull;
 import java.util.function.IntFunction;
@@ -7,7 +7,7 @@ import java.util.function.IntFunction;
  * @author anweisen | https://github.com/anweisen
  * @since 1.0
  */
-public enum PositionOrigin {
+public enum DrawOrigin {
 
   LEFT_TOP(width -> 0, height -> 0),
   LEFT_BOTTOM(width -> 0, height -> height),
@@ -23,7 +23,7 @@ public enum PositionOrigin {
 
   private final IntFunction<Integer> x, y;
 
-  PositionOrigin(@Nonnull IntFunction<Integer> x, @Nonnull IntFunction<Integer> y) {
+  DrawOrigin(@Nonnull IntFunction<Integer> x, @Nonnull IntFunction<Integer> y) {
     this.x = x;
     this.y = y;
   }

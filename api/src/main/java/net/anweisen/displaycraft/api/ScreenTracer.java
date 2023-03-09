@@ -13,7 +13,7 @@ public interface ScreenTracer {
 
   /**
    * Calculates the point of view on the given screen wall.
-   * There is no guaranty that there is actually a map, you have to validate the result your self.
+   * There is no guarantee that there is actually a map, you have to validate the result yourself
    *
    * @param axis        the direction of the pending map(s)
    * @param coordinate  the block coordinate of the screen map on the wall axis (not the given axis!)
